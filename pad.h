@@ -31,6 +31,7 @@ typedef struct sPad {
 } sPad;
 
 sPad* pad_new();
+void pad_delete(sPad* pad);
 void pad_set(sPad* p, char*Name,char* Number, char* Flags,
   double X1,double Y1,double X2,double Y2,
   double Thickness,double Clearance, double Mask);

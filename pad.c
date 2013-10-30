@@ -28,6 +28,10 @@ sPad* pad_new(){
   sPad* pad = (sPad*)malloc(sizeof(sPad));
   return pad;
 }
+void pad_delete(sPad* pad){
+  free(pad);
+}
+//TODO:this is temporary
 void pad_init(sPad* p){
   pad_set(p,"PadName","1","",1000,1000,2000,1500, 500,1000,1500);
 }
