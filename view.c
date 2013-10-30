@@ -68,57 +68,6 @@ void view_initialize(sView* view,const char* uiname){
 }
 
 /*****************************************************************************/
-// Draw the grid
-//
-void grid_draw(GtkWidget *widget, cairo_t *cr, sView* view){
-  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
-  cairo_set_source_rgb(cr, .5,.5,.5);
-  cairo_set_line_width(cr, 1);
-  int x,y;
-  cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND);
-  // how many pixels per grid unit...
-  int px_unit = view->grid.unit / view->scale; 
-  //Draw the grid in view coordinates. 
-  //Convert screen (0,0) to nearest grid coordinate...
- printf("grid_draw1 grid_origin (%d,%d), origin(%d,%d)\n",
-   view->grid.origin.x, view->grid.origin.y,
-   view->origin.x, view->origin.y);
-  
-  sPoint start = {
-    ((view->grid.origin.x - view->origin.x)/view->scale),// /px_unit)*px_unit,
-    ((view->grid.origin.y - view->origin.y)/view->scale)};// /px_unit)*px_unit };
- printf("grid_draw1 start (%d,%d),%d\n",start.x,start.y,px_unit);
-  //draw the four quadrants
-  for(y=start.y; y<view->height; y+=px_unit){
-    for(x=start.x; x<view->width; x+=px_unit){
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-    }
-    for(x=start.x; x>0; x-=px_unit){
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-    } 
-  } 
-  for(y=start.y; y>0; y-=px_unit){
-    for(x=start.x; x<view->width; x+=px_unit){
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-    }
-    for(x=start.x; x>0; x-=px_unit){
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-  } }
-  
-//  cairo_stroke(cr);    
-//targeting lines
-  cairo_move_to(cr,view->pxMouse.x,0);
-  cairo_line_to(cr,view->pxMouse.x,view->height);
-  cairo_move_to(cr,0,y=view->pxMouse.y);
-  cairo_line_to(cr,view->width,view->pxMouse.y);
-  cairo_stroke(cr);    
- printf("grid_draw2 %d %d\n",view->pxMouse.x,view->pxMouse.y);
-}
-/*****************************************************************************/
 /*
  * */
 extern gboolean canvas_draw_cb(GtkWidget *widget, cairo_t *cr, 
