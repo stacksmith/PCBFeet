@@ -32,10 +32,20 @@ typedef struct sPoint{
   coord x;
   coord y;
 } sPoint;
+// sNearestPoint is used for measurements
+typedef struct sNearestPoint{
+  sPoint point; //nearest point (usually for grid)
+//  sPoint delta; //x and y distances to nearest point
+  double distance; //as the crow flies
+} sNearestPoint;
 
 typedef struct sGrid {
   sPoint origin;
   coord unit;       //in centimils
+  sNearestPoint nearest;
+  // TODO: these probably should be transient...
+  sPoint pxOrigin;  //after drawing, upper left pixel coordinates
+  sPoint xyCnt;     //after drawing, x and y gridpoint count
 } sGrid;
 
 typedef struct sView {

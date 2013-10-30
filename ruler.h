@@ -16,6 +16,3 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-extern gboolean vruler_draw_cb(GtkWidget *widget, cairo_t *cr, sView* view);
-extern gboolean origin_draw_cb(GtkWidget *widget, cairo_t *cr, sView* view);
-extern gboolean hruler_draw_cb(GtkWidget *widget, cairo_t *cr, sView* view);
