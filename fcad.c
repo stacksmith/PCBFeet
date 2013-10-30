@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 
   sView* view = view_new();
   sElement* el = element_new();
+  view->element = el;
   view_initialize(view,"fcad.ui");
   
   gtk_main();

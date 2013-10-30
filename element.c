@@ -44,8 +44,19 @@ void element_init(sElement* el){
   el->textScale = 100;
   el->textFlags = 0;
   el->data = NULL;
+
+  sPad* pad = pad_new();
+  pad_init(pad);
+  element_add(el,pad);
+  
 }
 
 void element_add(sElement*el,gpointer part){
   el->data = g_slist_prepend(el->data,part);
+}
+
+void element_draw(sElement*el, cairo_t* cr, sView* view){
+  printf("element_draw\n");
+ 
+  
 }

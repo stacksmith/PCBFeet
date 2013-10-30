@@ -25,7 +25,7 @@
 #include "view.h"
 #include "pad.h"
 
-sPad*pad;
+//sPad*pad;
 
 sView* view_new(){
   return (sView*)malloc(sizeof(sView));
@@ -46,8 +46,8 @@ void view_initialize(sView* view,const char* uiname){
   view->mode = MODE_IDLE;
   
   //move this to document
-  pad = pad_new();
-  pad_init(pad);
+//  pad = pad_new();
+//  pad_init(pad);
 
   GtkBuilder *builder = gtk_builder_new ();
   gtk_builder_add_from_file (builder, uiname, NULL);
@@ -85,7 +85,8 @@ printf("cadwin_draw %d %d\n",gtk_widget_get_allocated_width(widget),
   cairo_line_to(cr,1000,1000);
   cairo_stroke(cr);    
 */
-  pad_draw(pad,cr,view);
+//  pad_draw(pad,cr,view);
+  element_draw(view->element);
   grid_draw(widget,cr,view);
   //draw the targeting lines
   int x,y;
