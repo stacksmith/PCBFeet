@@ -21,23 +21,12 @@
  * scale - how many centimils of the document fit into a pixel.
  * 
 */
-typedef int coord;
 
 typedef enum eMode {
   MODE_IDLE,
   MODE_SET_ORIGIN
 } eMode;
 
-typedef struct sPoint{
-  coord x;
-  coord y;
-} sPoint;
-// sNearestPoint is used for measurements
-typedef struct sNearestPoint{
-  sPoint point; //nearest point (usually for grid)
-//  sPoint delta; //x and y distances to nearest point
-  double distance; //as the crow flies
-} sNearestPoint;
 
 typedef struct sGrid {
   sPoint origin;
@@ -48,7 +37,9 @@ typedef struct sGrid {
   sPoint xyCnt;     //after drawing, x and y gridpoint count
 } sGrid;
 
+struct sElement;
 typedef struct sView {
+  struct sElement* element;
   // all coordinates here are in the doc coordinate system
   sPoint origin;
   float scale;  //this many centimils to a pixel

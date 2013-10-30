@@ -19,6 +19,7 @@
 #include <cairo.h>
 #include <gtk/gtk.h>
 #include <stdio.h>
+#include "types.h"
 #include "view.h"
 #include "pad.h"
 #include "element.h"
@@ -26,4 +27,25 @@
 sElement* element_new(){
   sElement* ret = (sElement*)g_malloc(sizeof(sElement));
   return ret;
+}
+
+void element_delete(sElement* el){
+  g_free(el);
+}
+
+void element_init(sElement* el){
+  el->flags=0;
+  el->description=g_string_new("Test Footprint");
+  el->markPos.x = 2000;
+  el->markPos.y = 1500;
+  el->textPos.x = 1800;
+  el->textPos.y = 2200;
+  el->textDir = TEXT_HOR;
+  el->textScale = 100;
+  el->textFlags = 0;
+  el->data = NULL;
+}
+
+void element_add(sElement*el,gpointer part){
+  el->data = g_slist_prepend(el->data,part);
 }

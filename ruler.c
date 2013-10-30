@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 
+#include "types.h"
 #include "view.h"
 #include "ruler.h"
 #define HRULER_WIDTH 16

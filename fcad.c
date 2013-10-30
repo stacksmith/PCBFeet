@@ -20,7 +20,9 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 
+#include "types.h"
 #include "view.h"
+#include "element.h"
 
 
 /*****************************************************************************/
@@ -30,6 +32,7 @@ int main(int argc, char *argv[])
   gtk_init(&argc, &argv);
 
   sView* view = view_new();
+  sElement* el = element_new();
   view_initialize(view,"fcad.ui");
   
   gtk_main();

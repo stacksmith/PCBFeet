@@ -16,28 +16,20 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-typedef enum eTextDir{
-  TEXT_HOR=0,
-  TEXT_UP,
-  TEXT_UD,
-  TEXT_DOWN
-} eTextDir;
-typedef struct sElement {
-  unsigned int flags;           //
-  GString*     description;     //textual description
-  sPoint       markPos;         //position of mark
-  sPoint       textPos;         //position of text
-  eTextDir     textDir;
-  unsigned int textScale;
-  unsigned int textFlags; 
-  GSList*      data;            //a linked list of data parts
-  
-} sElement;
+/* some common types
+*/
 
-sElement* element_new();
-void element_delete(sElement* el);
-void element_init(sElement*);
-void element_add(sElement*el,gpointer part);
-void element_draw(sElement*p, cairo_t* cr, sView* view);
+typedef int coord;
 
+typedef struct sPoint{
+  coord x;
+  coord y;
+} sPoint;
+
+// sNearestPoint is used for measurements
+typedef struct sNearestPoint{
+  sPoint point; //nearest point (usually for grid)
+//  sPoint delta; //x and y distances to nearest point
+  double distance; //as the crow flies
+} sNearestPoint;
 

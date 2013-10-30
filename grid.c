@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <math.h>
+#include "types.h"
 #include "view.h"
 /*****************************************************************************/
 // Draw the grid

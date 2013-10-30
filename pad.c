@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 #include <malloc.h>
 
+#include "types.h"
 #include "view.h"
 #include "pad.h"
 
