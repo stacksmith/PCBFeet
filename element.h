@@ -17,12 +17,12 @@
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 /* pad */
-typedef struct sDocument {
-} sDocument;
+typedef struct sElement {
+} sElement;
 
-sDocument* document_new();
-void document_delete(sDocument* document);
-void document_init();
-void document_draw(sDocument*p, cairo_t* cr, sView* view);
+sElement* element_new();
+void element_delete(sElement* element);
+void element_init();
+void element_draw(sElement*p, cairo_t* cr, sView* view);
 
 
