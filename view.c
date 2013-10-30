@@ -42,7 +42,7 @@ void view_initialize(sView* view,const char* uiname){
   view->mouse.x = 0;
   view->mouse.y = 0;
   
-  view->mode = mode_idle;
+  view->mode = MODE_IDLE;
   
   //move this to document
   pad = pad_new();
@@ -50,6 +50,7 @@ void view_initialize(sView* view,const char* uiname){
 
   GtkBuilder *builder = gtk_builder_new ();
   gtk_builder_add_from_file (builder, uiname, NULL);
+  //keep track of important widgets
   view->frame = (GtkWidget*)gtk_builder_get_object (builder, "frame");
   view->canvas = (GtkWidget*)gtk_builder_get_object (builder, "canvas");
   view->hruler = (GtkWidget*)gtk_builder_get_object (builder, "hruler");
@@ -108,13 +109,23 @@ void grid_draw(GtkWidget *widget, cairo_t *cr, sView* view){
           cairo_line_to(cr, x,y);
   } }
   
+//  cairo_stroke(cr);    
+//targeting lines
+  cairo_move_to(cr,view->pxMouse.x,0);
+  cairo_line_to(cr,view->pxMouse.x,view->height);
+  cairo_move_to(cr,0,y=view->pxMouse.y);
+  cairo_line_to(cr,view->width,view->pxMouse.y);
   cairo_stroke(cr);    
- printf("grid_draw2 %d\n",px_unit);
+ printf("grid_draw2 %d %d\n",view->pxMouse.x,view->pxMouse.y);
 }
+/*****************************************************************************/
+/*
+ * */
 extern gboolean canvas_draw_cb(GtkWidget *widget, cairo_t *cr, 
     sView* view){
 printf("cadwin_draw %d %d\n",gtk_widget_get_allocated_width(widget),
   gtk_widget_get_allocated_height(widget));
+
   cairo_set_source_rgb(cr, 0, 0, 0);
   cairo_identity_matrix(cr);
   //rulers
@@ -126,6 +137,8 @@ printf("cadwin_draw %d %d\n",gtk_widget_get_allocated_width(widget),
 */
   pad_draw(pad,cr,view);
   grid_draw(widget,cr,view);
+  //draw the targeting lines
+  int x,y;
   return FALSE;
 }
 
@@ -146,15 +159,21 @@ void status_xy_update(sView* view){
 /*****************************************************************************/
 // As the mouse moves, update the ruler and the coordinates.
 //
-extern gboolean canvas_motion_notify_event_cb (GtkWidget *widget,
+extern gboolean canvas_motion_notify_event_cb (GtkWidget *canvas,
                                             GdkEventMotion  *event,
                                             sView* view)  {
-  printf("canvas_motion_notify_event_cb grid origin:(%d,%d)\n",
-         view->grid_origin.x,view->grid_origin.y)  ;
   // store mouse coordinates as view coordinates
+  view->pxMouse.x = event->x;
+  view->pxMouse.y = event->y;
+  printf("canvas_motion_notify_event_cb (%d,%d)\n",
+         view->pxMouse.x,view->pxMouse.y)  ;
+  
+  //TODO: remove this
   view->mouse.x = ((int)(event->x))*view->scale+ view->origin.x ;
   view->mouse.y = ((int)(event->y))*view->scale+ view->origin.y ;
   status_xy_update(view);
+  //TODO: optimise targeting line redraw...
+  gtk_widget_queue_draw(canvas); //redraw ruler
   return FALSE;
 }
 /*****************************************************************************/
@@ -201,6 +220,10 @@ gboolean canvas_button_release_event_cb(GtkWidget* canvas,GdkEventButton* event,
 //  printf("canvas_button_release_event_cb %d %d\n",(int)event->x,(int)event->y);
 //  printf("canvas_button_release_event_cb %f %f\n",event->x,event->y);
   printf("canvas_button_release_event_cb %d %d\n",(int)event->x,(int)event->y);
+  GdkWindow* w = gtk_widget_get_window(view->frame);
+  GdkCursor* cur = gdk_cursor_new(GDK_LEFT_PTR);
+  gdk_window_set_cursor(w,cur);
+  view->mode = MODE_IDLE;  //mode switch  
 
 int old = view->grid_origin.x;
 //  getchar();
@@ -209,7 +232,8 @@ int old = view->grid_origin.x;
 
 printf("from %d to %d\n",
          old, view->grid_origin.x);
-  gtk_widget_queue_draw(canvas); //re
+  //force updates of canvas (to redraw grid) and rulers (since origin changed)
+  gtk_widget_queue_draw(canvas); 
   gtk_widget_queue_draw(view->hruler); //redraw ruler
   gtk_widget_queue_draw(view->vruler); //redraw ruler
   status_xy_update(view);

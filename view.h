@@ -24,8 +24,8 @@
 typedef int coord;
 
 typedef enum eMode {
-  mode_idle,
-  mode_set_origin
+  MODE_IDLE,
+  MODE_SET_ORIGIN
 } eMode;
 
 typedef struct sPoint{
@@ -34,7 +34,7 @@ typedef struct sPoint{
 } sPoint;
 
 typedef struct sView {
-  // all coordinates here are in the view coordinate system
+  // all coordinates here are in the doc coordinate system
   sPoint origin;
   sPoint grid_origin;
   sPoint mouse;
@@ -46,6 +46,7 @@ typedef struct sView {
   //screen pixel measurements
   int width;
   int height;
+  sPoint pxMouse;
 
   eMode mode;
   
