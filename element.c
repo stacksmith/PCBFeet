@@ -21,3 +21,9 @@
 #include <stdio.h>
 #include "view.h"
 #include "pad.h"
+#include "element.h"
+
+sElement* element_new(){
+  sElement* ret = (sElement*)g_malloc(sizeof(sElement));
+  return ret;
+}

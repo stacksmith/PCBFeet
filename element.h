@@ -16,8 +16,20 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-/* pad */
+typedef enum eTextDir{
+  TEXT_HOR=0,
+  TEXT_UP,
+  TEXT_UD,
+  TEXT_DOWN
+} eTextDir;
 typedef struct sElement {
+  unsigned int flags;           //
+  GString      description;     //textual description
+  sPoint       mark_xy;         //position of mark
+  sPoint       text_xy;         //position of text
+  eTextDir     text_dir;
+  unsigned int text_scale;
+  unsigned int text_flags; 
 } sElement;
 
 sElement* element_new();

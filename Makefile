@@ -15,9 +15,6 @@ view.o: view.c view.h
 ruler.o: ruler.c ruler.h view.h
 	gcc ruler.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-pad.o:  pad.c pad.h view.h
-	gcc pad.c -c `pkg-config --cflags  gtk+-3.0` -O3
-
 fcad.o: fcad.c view.h ruler.h pad.h 
 	gcc fcad.c -c `pkg-config --cflags  gtk+-3.0` -O3
 	
