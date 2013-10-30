@@ -58,7 +58,7 @@ void ruler_label(cairo_t* cr,double value){
 /*****************************************************************************/
 extern gboolean hruler_draw_cb(GtkWidget *widget, cairo_t *cr, sView* view){
 //decide on a notch value.  Start with grid
-  int unit = view->grid_unit / view->scale; //in pixels
+  int unit = view->grid.unit / view->scale; //in pixels
 
    cairo_select_font_face(cr, "Sans",
       CAIRO_FONT_SLANT_NORMAL,
@@ -72,11 +72,11 @@ cairo_set_font_size(cr, 8);
   cairo_set_line_width(cr, 1);
   cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
   //Ruler is empirically matched to the grid.  Draw from origin...
-  int px_unit = view->grid_unit / view->scale; 
-  int start =  (view->grid_origin.x - view->origin.x)/view->scale;
+  int px_unit = view->grid.unit / view->scale; 
+  int start =  (view->grid.origin.x - view->origin.x)/view->scale;
   double value = 0;
   int i;
-  for(i=start;i<view->width;i+=unit*5,value+=view->grid_unit*5){
+  for(i=start;i<view->width;i+=unit*5,value+=view->grid.unit*5){
 //printf("hruler (%d,%d)\n",i,HRULER_WIDTH);
     cairo_move_to(cr,i,HRULER_WIDTH); //long stroke
     cairo_line_to(cr,i,HRULER_WIDTH-6);
@@ -88,7 +88,7 @@ cairo_set_font_size(cr, 8);
     }
   }
   value=0;
-  for(i=start;i>0;i-=unit*5,value-=view->grid_unit*5){
+  for(i=start;i>0;i-=unit*5,value-=view->grid.unit*5){
 //printf("hruler (%d,%d)\n",i,HRULER_WIDTH);
     cairo_move_to(cr,i,HRULER_WIDTH); //long stroke
     cairo_line_to(cr,i,HRULER_WIDTH-6);
@@ -103,7 +103,7 @@ cairo_set_font_size(cr, 8);
   cairo_move_to(cr,HRULER_WIDTH,0);
   cairo_move_to(cr,view->width,0);
   // current position
-  int x = (view->mouse.x-view->origin.x)/view->scale;
+  int x = view->pxMouse.x;
   cairo_move_to(cr,x,0);
   cairo_line_to(cr,x,HRULER_WIDTH);
 

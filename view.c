@@ -35,12 +35,12 @@ void view_initialize(sView* view,const char* uiname){
   view->origin.y=-10000;
   view->scale = 100;
 
-  view->grid_origin.x=0;
-  view->grid_origin.y=0;
-  view->grid_unit = 1000;
+  view->grid.origin.x=0;
+  view->grid.origin.y=0;
+  view->grid.unit = 1000;
   
-  view->mouse.x = 0;
-  view->mouse.y = 0;
+  view->pxMouse.x = 0;
+  view->pxMouse.y = 0;
   
   view->mode = MODE_IDLE;
   
@@ -77,16 +77,16 @@ void grid_draw(GtkWidget *widget, cairo_t *cr, sView* view){
   int x,y;
   cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND);
   // how many pixels per grid unit...
-  int px_unit = view->grid_unit / view->scale; 
+  int px_unit = view->grid.unit / view->scale; 
   //Draw the grid in view coordinates. 
   //Convert screen (0,0) to nearest grid coordinate...
  printf("grid_draw1 grid_origin (%d,%d), origin(%d,%d)\n",
-   view->grid_origin.x, view->grid_origin.y,
+   view->grid.origin.x, view->grid.origin.y,
    view->origin.x, view->origin.y);
   
   sPoint start = {
-    ((view->grid_origin.x - view->origin.x)/view->scale),// /px_unit)*px_unit,
-    ((view->grid_origin.y - view->origin.y)/view->scale)};// /px_unit)*px_unit };
+    ((view->grid.origin.x - view->origin.x)/view->scale),// /px_unit)*px_unit,
+    ((view->grid.origin.y - view->origin.y)/view->scale)};// /px_unit)*px_unit };
  printf("grid_draw1 start (%d,%d),%d\n",start.x,start.y,px_unit);
   //draw the four quadrants
   for(y=start.y; y<view->height; y+=px_unit){
@@ -148,8 +148,8 @@ printf("cadwin_draw %d %d\n",gtk_widget_get_allocated_width(widget),
 void status_xy_update(sView* view){
   char buf[32];
   sprintf(buf,"(%5g,%5g)",
-    (view->mouse.x-view->grid_origin.x)/100.0, //expressed as grid coordinate
-    (view->mouse.y-view->grid_origin.y)/100.0);
+    (view->pxMouse.x*view->scale+view->origin.x - view->grid.origin.x)/100.0, //expressed as grid coordinate
+    (view->pxMouse.y*view->scale+view->origin.y - view->grid.origin.y)/100.0);
   // show coordinates
   gtk_label_set_label((GtkLabel*)view->status_xy,buf);
   // redraw rulers
@@ -169,8 +169,8 @@ extern gboolean canvas_motion_notify_event_cb (GtkWidget *canvas,
          view->pxMouse.x,view->pxMouse.y)  ;
   
   //TODO: remove this
-  view->mouse.x = ((int)(event->x))*view->scale+ view->origin.x ;
-  view->mouse.y = ((int)(event->y))*view->scale+ view->origin.y ;
+//  view->mouse.x = ((int)(event->x))*view->scale+ view->origin.x ;
+//  view->mouse.y = ((int)(event->y))*view->scale+ view->origin.y ;
   status_xy_update(view);
   //TODO: optimise targeting line redraw...
   gtk_widget_queue_draw(canvas); //redraw ruler
@@ -191,9 +191,9 @@ extern gboolean canvas_scroll_event_cb(GtkWidget* canvas,GdkEventScroll* event,s
   GdkScrollDirection dir = event->direction;
 //  printf("SCROLLing %f,",view->scale);
   float newscale;
-  int pix_x =  (view->mouse.x - view->origin.x)/view->scale;
-  int pix_y =  (view->mouse.y - view->origin.y)/view->scale;
-//  int pix_x =  view->grid_origin.x/view->scale - view->origin.x/view->scale;
+  int pix_x =  view->pxMouse.x;
+  int pix_y =  view->pxMouse.y;
+//  int pix_x =  view->grid.origin.x/view->scale - view->origin.x/view->scale;
   switch(dir){
     case GDK_SCROLL_UP: 
       newscale = view->scale*.9;
@@ -225,13 +225,13 @@ gboolean canvas_button_release_event_cb(GtkWidget* canvas,GdkEventButton* event,
   gdk_window_set_cursor(w,cur);
   view->mode = MODE_IDLE;  //mode switch  
 
-int old = view->grid_origin.x;
+int old = view->grid.origin.x;
 //  getchar();
-  view->grid_origin.x = view->mouse.x;
-  view->grid_origin.y = view->mouse.y;
+  view->grid.origin.x = view->pxMouse.x*view->scale+view->origin.x;
+  view->grid.origin.y = view->pxMouse.y*view->scale+view->origin.y;
 
 printf("from %d to %d\n",
-         old, view->grid_origin.x);
+         old, view->grid.origin.x);
   //force updates of canvas (to redraw grid) and rulers (since origin changed)
   gtk_widget_queue_draw(canvas); 
   gtk_widget_queue_draw(view->hruler); //redraw ruler

@@ -33,15 +33,17 @@ typedef struct sPoint{
   coord y;
 } sPoint;
 
+typedef struct sGrid {
+  sPoint origin;
+  coord unit;       //in centimils
+} sGrid;
+
 typedef struct sView {
   // all coordinates here are in the doc coordinate system
   sPoint origin;
-  sPoint grid_origin;
-  sPoint mouse;
-  coord grid_unit; //in centimils
-  
   float scale;  //this many centimils to a pixel
 
+  sGrid grid;
   
   //screen pixel measurements
   int width;
