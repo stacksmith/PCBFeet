@@ -7,4 +7,7 @@ Creating PCB footprints is hard, and I do it a lot.  I've been bitching about th
 
 This project is a simple CAD for editing footprints.  It is built around GTK 3.0, so it should be portable (I will address it later), but for now Linux is the only target.
 
-STATUS: early prototype.
+STATUS:
+======
+
+Early prototype.  Zoom with mouse wheel; click sets grid origin. Simple pad is visible.
