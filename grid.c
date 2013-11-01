@@ -53,26 +53,26 @@ void grid_draw(GtkWidget *canvas, cairo_t *cr, sView* view){
   //draw the four quadrants
   for(y=start.y; y<view->height; y+=px_unit){   //lower
     for(x=start.x; x<view->width; x+=px_unit){  //right
-      cairo_move_to(cr, x,y);
-      cairo_line_to(cr, x,y);
+      cairo_move_to(cr, x+.5,y+.5);
+      cairo_line_to(cr, x+.5,y+.5);
       w++;h++;
     }
     for(x=start.x; x>=0; x-=px_unit){            //lower left
-      cairo_move_to(cr, x,y);
-      cairo_line_to(cr, x,y);
+      cairo_move_to(cr, x+.5,y+.5);
+      cairo_line_to(cr, x+.5,y+.5);
       w++;h++;
     } 
   } 
   grid->pxOrigin.x = x+px_unit;          //set grid's leftmost position
   for(y=start.y; y>=0; y-=px_unit){
     for(x=start.x; x<view->width; x+=px_unit){
-      cairo_move_to(cr, x,y);
-      cairo_line_to(cr, x,y);
+      cairo_move_to(cr, x+.5,y+.5);
+      cairo_line_to(cr, x+.5,y+.5);
       w++;h++;
     }
     for(x=start.x; x>=0; x-=px_unit){
-      cairo_move_to(cr, x,y);
-      cairo_line_to(cr, x,y);
+      cairo_move_to(cr, x+.5,y+.5);
+      cairo_line_to(cr, x+.5,y+.5);
       w++;h++;
     }
   }
