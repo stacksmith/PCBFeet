@@ -44,33 +44,31 @@
   { CONNECTEDFLAG, N ("connected"), ALL_TYPES }
 };*/
 
-typedef enum eSymFlag {
-  NONE       = 0,
-  HOLE       =0x00000001,
-  USETHERMAL =0x00000002,  /* draw pin, via with thermal fingers */
-  SQUARE     =0x00000100,
-  OCTAGON    =0x00000200,
-  ONSOLDER   =0x00010000,
-  EDGE2      =0x01000000
-} eSymFlag;
+typedef enum ePinShape {
+  HOLE,
+  ROUND,
+  SQUARE,
+  OCTAGON
+} ePinShape;
+
 
 typedef struct sPin {
   sVTAB vtab;
   char* Name;
   char* Number;
-  eSymFlag Flags;
   int X;
   int Y;
   int Thickness;
   int Clearance;   //separation of pad from other conductors (50%)
   int Mask;
   int Hole;
+  ePinShape Shape;
 } sPin;
 
 sPin* pin_new(int X,int Y,
   int Thickness,int Clearance, int Mask,
   int Hole,
-  char*Name,char* Number, eSymFlag Flags);
+  char*Name,char* Number, ePinShape Shape);
 void pin_delete(sPin* pad);
 void pin_draw(sPin*p, cairo_t* cr, sView* view);
 

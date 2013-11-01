@@ -30,7 +30,7 @@
 sPin* pin_new(int X,int Y,
   int Thickness,int Clearance, int Mask,
   int Hole,
-  char*Name,char* Number, eSymFlag Flags){
+  char*Name,char* Number,  ePinShape Shape){
   
   sPin* pin = (sPin*)g_malloc(sizeof(sPin));
   pin->vtab.draw = (ptrDraw)&pin_draw;//comply with generic vtab func 
@@ -42,7 +42,7 @@ sPin* pin_new(int X,int Y,
   pin->Hole   = Hole;
   pin->Name   = Name;
   pin->Number = Number;
-  pin->Flags  = Flags;
+  pin->Shape  = Shape;
   return pin;
 }
 void pin_delete(sPin* pin){
@@ -56,18 +56,47 @@ void pin_draw(sPin*pin, cairo_t* cr, sView* view){
   int rad_inner = pin->Hole/2;
 //  int width = (pin->Thickness - pin->Hole)/2; //pad diameter-hole diameter/2
 //  int radius = (pin->Hole + width)/2;
-  //manually scale here
-  cairo_set_line_cap(cr,CAIRO_LINE_CAP_BUTT);
-  cairo_set_source_rgb(cr, 0,.6, 0);
-  cairo_set_line_width(cr, 1);
-printf("pin_draw 1\n");
-  cairo_new_sub_path(cr);
-  cairo_arc(cr,
-    (double)(pin->X-view->origin.x)/(double)view->scale +.5,
-    (double)(pin->Y-view->origin.y)/(double)view->scale +.5,
-    rad_outer/view->scale,
-    0,2 * M_PI);
-  cairo_fill(cr);
+  //Draw pin outer shape
+    cairo_set_line_cap(cr,CAIRO_LINE_CAP_BUTT);
+    cairo_set_source_rgb(cr, 0,.6, 0);
+    cairo_set_line_width(cr, .01);
+    //Draw the outer shape
+  switch(pin->Shape ){
+    case ROUND:
+printf("pin_draw round\n");
+      cairo_new_sub_path(cr);
+      cairo_arc(cr,
+        (pin->X-view->origin.x)/view->scale +.5,
+        (pin->Y-view->origin.y)/view->scale +.5,
+        rad_outer/view->scale,
+        0,2 * M_PI);
+      cairo_fill(cr);
+      break;
+    case SQUARE:
+      cairo_rectangle(cr,
+         (pin->X-rad_outer-view->origin.x)/view->scale +.5,
+         (pin->Y-rad_outer-view->origin.y)/view->scale +.5,
+         pin->Thickness/view->scale +.5,pin->Thickness/view->scale +.5);                      
+      cairo_fill(cr);
+      break;
+    case OCTAGON:
+printf("pin_draw octa\n");
+      break;
+    default:
+printf("pin_draw illegal\n");
+      break;
+  }
+  //Draw the hole
+    cairo_set_source_rgb(cr, 1,1,1);
+    cairo_new_sub_path(cr);
+    cairo_arc(cr,
+      (pin->X-view->origin.x)/view->scale +.5,
+      (pin->Y-view->origin.y)/view->scale +.5,
+      rad_inner/view->scale,
+      0,2 * M_PI);
+      cairo_fill(cr);
+ 
+  
   cairo_stroke(cr);    
 }
 
