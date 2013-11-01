@@ -91,12 +91,12 @@ printf("grid_draw2 nearest(%d %d) distance %f\n",grid->nearest.point.x,grid->nea
   grid->nearest.distance);
 
   cairo_stroke(cr);    
-  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
+//  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
 
-  cairo_move_to(cr,grid->nearest.point.x,0);
-  cairo_line_to(cr,grid->nearest.point.x,view->height);
-  cairo_move_to(cr,0,grid->nearest.point.y);
-  cairo_line_to(cr,view->width,grid->nearest.point.y);
+  cairo_move_to(cr,grid->nearest.point.x+.5 ,0.5);
+  cairo_line_to(cr,grid->nearest.point.x+.5,view->height+.5);
+  cairo_move_to(cr,0+.5,grid->nearest.point.y+.5);
+  cairo_line_to(cr,view->width+.5,grid->nearest.point.y+.5);
 
 //  cairo_move_to(cr,view->pxMouse.x,0);
 //  cairo_line_to(cr,view->pxMouse.x,view->height);

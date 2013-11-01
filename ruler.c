@@ -23,7 +23,7 @@
 #include "types.h"
 #include "view.h"
 #include "ruler.h"
-#define HRULER_WIDTH 16
+#define HRULER_WIDTH 16.5
 
 /*  Ruler is drawn in pixels (there is always an integral centimils in a pix)
  * To determine the ruler unit, we attempt to match the grid with marks; if
@@ -68,13 +68,13 @@ printf("hruler_draw_cb %d\n",unit);
 cairo_set_font_size(cr, 8);
     cairo_move_to(cr,0,10); //long stroke
   cairo_identity_matrix(cr);
-  cairo_set_line_cap(cr,CAIRO_LINE_CAP_SQUARE);
+  //cairo_set_line_cap(cr,CAIRO_LINE_CAP_SQUARE);
   cairo_set_source_rgb(cr, 0,0,0);
   cairo_set_line_width(cr, 1);
   cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
   //Ruler is empirically matched to the grid.  Draw from origin...
   int px_unit = view->grid.unit / view->scale; 
-  int start =  (view->grid.origin.x - view->origin.x)/view->scale;
+  int start =  (view->grid.origin.x - view->origin.x)/view->scale+1.5;
   double value = 0;
   int i;
   for(i=start;i<view->width;i+=unit*5,value+=view->grid.unit*5){
