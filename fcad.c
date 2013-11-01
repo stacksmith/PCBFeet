@@ -37,9 +37,10 @@ int main(int argc, char *argv[])
   sView* view = view_new();
   sElement* el = element_new();
   element_init(el);
-  element_add(el,pad_new(1000,1000,2000,1500,  500,1000,1500,  "PadName","1",""));
-  element_add(el,pad_new(3000,1000,3000,1500,  500,1000,1500,  "PadName","1",""));
-  element_add(el,pin_new(4000,4000, 1000,1000,1500, 500, "Pin1","1",""));
+//  element_add(el,pad_new(1000,1000,2000,1500,  500,1000,1500,  "PadName","1",""));
+  element_add(el,pin_new(0,0,8100,3937,8494,4600,"1","1","square,edge2"));
+  element_add(el,pin_new(10000,0,8100,3937,8494,4600,"2","2","square,edge2"));
+ // element_add(el,pin_new(4000,4000, 1000,1000,1500, 500, "Pin1","1",""));
   
   view->element = el;
   view_initialize(view,"fcad.ui");

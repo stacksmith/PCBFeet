@@ -36,8 +36,8 @@ void view_initialize(sView* view,const char* uiname){
   view->origin.y=-10000;
   view->scale = 100;
 
-  view->grid.origin.x=4000;
-  view->grid.origin.y=4000;
+  view->grid.origin.x=0000;
+  view->grid.origin.y=0000;
   view->grid.unit = 1000;
   
   view->pxMouse.x = 0;
