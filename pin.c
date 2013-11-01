@@ -33,7 +33,7 @@ sPin* pin_new(int X,int Y,
   char*Name,char* Number, char* Flags){
   
   sPin* pin = (sPin*)g_malloc(sizeof(sPin));
-  pin->vtab.draw = (ptrDraw)&pin_draw;
+  pin->vtab.draw = (ptrDraw)&pin_draw;//comply with generic vtab func 
   pin->X      = X;
   pin->Y      = Y;
   pin->Thickness = Thickness;
