@@ -21,9 +21,16 @@
 #include <stdio.h>
 #include "types.h"
 #include "view.h"
-#include "pad.h"
 #include "element.h"
-sPad*pad;
+
+//vtable as element sees it:
+struct sPad;
+typedef void (*ptrDraw)(void*, cairo_t*,sView*);
+typedef struct sVTAB {
+  ptrDraw draw;
+} sVTAB;
+
+
 sElement* element_new(){
   sElement* ret = (sElement*)g_malloc(sizeof(sElement));
   return ret;
@@ -45,19 +52,23 @@ void element_init(sElement* el){
   el->textFlags = 0;
   el->data = NULL;
 
-  pad = pad_new();
-  pad_init(pad);
-  element_add(el,pad);
   
 }
 
 void element_add(sElement*el,gpointer part){
   el->data = g_slist_prepend(el->data,part);
 }
-
 void element_draw(sElement*el, cairo_t* cr, sView* view){
   printf("element_draw\n");
-  pad->draw(pad,cr,view);
+  GSList* item = el->data;
+  while(item){
+    sVTAB* drawable = ((sVTAB*)item->data);
+    drawable->draw(drawable,cr,view);
+    item = item->next;
+  }
+    
+//  sPad* pad = ((sPad*)el->data->data);
+//  pad->vtab.draw(pad,cr,view);
   
  
   

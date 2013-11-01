@@ -16,32 +16,29 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-/* pad */
-
-struct sPad;
-typedef void (*ptrDraw)(struct sPad*, cairo_t*,sView*);
+struct sPin;
+typedef void (*ptrDraw)(struct sPin*, cairo_t*,sView*);
 typedef struct sVTAB {
   ptrDraw draw;
 } sVTAB;
 
-typedef struct sPad {
+typedef struct sPin {
   sVTAB vtab;
   char* Name;
   char* Number;
   char* Flags;
-  int X1;
-  int Y1;
-  int X2;
-  int Y2;
-  int Thickness;   //Width of metal 
+  int X;
+  int Y;
   int Clearance;   //separation of pad from other conductors (50%)
   int Mask;
+  int Hole;
 } sPad;
 
-sPad* pad_new(int X1,int Y1,int X2,int Y2,
+sPin* pin_new(int X,int Y,
   int Thickness,int Clearance, int Mask,
+  int Hole,
   char*Name,char* Number, char* Flags);
-void pad_delete(sPad* pad);
-void pad_draw(sPad*p, cairo_t* cr, sView* view);
+void pin_delete(sPin* pad);
+void pin_draw(sPin*p, cairo_t* cr, sView* view);
 
 

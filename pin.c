@@ -21,49 +21,47 @@
 
 #include "types.h"
 #include "view.h"
-#include "pad.h"
+#include "pin.h"
 
 
-sPad* pad_new(int X1,int Y1,int X2,int Y2,
+sPad* pin_new(int X,int Y,
   int Thickness,int Clearance, int Mask,
+  int Hole,
   char*Name,char* Number, char* Flags){
   
-  sPad* pad = (sPad*)g_malloc(sizeof(sPad));
-  pad->vtab.draw = &pad_draw;
-
-  pad->Name   = Name;
-  pad->Number = Number;
-  pad->Flags  = Flags;
-  pad->X1     = X1;
-  pad->Y1     = Y1;
-  pad->X2     = X2;
-  pad->Y2     = Y2;
-  pad->Thickness = Thickness;
-  pad->Clearance = Clearance;
-  pad->Mask = Mask; 
-
-  return pad;
+  sPad* pin = (sPad*)g_malloc(sizeof(sPad));
+  pin->vtab.draw = &pin_draw;
+  pin->X      = X;
+  pin->Y      = Y;
+  pin->Thickness = Thickness;
+  pin->Clearance = Clearance;
+  pin->Mask   = Mask; 
+  pin->Hole   = Hole
+  pin->Name   = Name;
+  pin->Number = Number;
+  pin->Flags  = Flags;
+  return pin;
 }
-void pad_delete(sPad* pad){
-  g_free(pad);
+void pin_delete(sPad* pin){
+  g_free(pin);
 }
 
 
-void pad_draw(sPad*pad, cairo_t* cr, sView* view){
-  printf("pad_draw %p\n",pad);
+void pin_draw(sPad*pin, cairo_t* cr, sView* view){
+  printf("pin_draw %p\n",pin);
+  int width = (pin->Thickness - pin->Hole)/2; //pad diameter-hole diameter/2
+  radius = (pin->Hole + width)/2;
   //manually scale here
   cairo_set_line_cap(cr,CAIRO_LINE_CAP_SQUARE);
   cairo_set_source_rgb(cr, 0,.6, 0);
-  cairo_set_line_width(cr, pad->Thickness/view->scale);
-  printf("pad_draw 1\n");
+  cairo_set_line_width(cr, width /view->scale);
+  printf("pin_draw 1\n");
   
-  // convert native centimils to pixels
-  cairo_move_to(cr,
-    (pad->X1-view->origin.x)/view->scale,
-    (pad->Y1-view->origin.y)/view->scale);
-  cairo_line_to(cr,
-    (pad->X2-view->origin.x)/view->scale,
-    (pad->Y2-view->origin.y)/view->scale);
+  cairo_arc(cr,
+    (pin->X-view->origin.x)/view->scale,
+    (pin->Y-view->origin.y)/view->scale,
+    radius,
+    0,360);
  
   cairo_stroke(cr);    
 }
