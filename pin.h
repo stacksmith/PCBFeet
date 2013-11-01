@@ -16,12 +16,49 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
+/*From PCB source...
+ * static FlagBitsType object_flagbits[] = {
+  { PINFLAG, N ("pin"), ALL_TYPES },
+  { VIAFLAG, N ("via"), ALL_TYPES },
+  { FOUNDFLAG, N ("found"), ALL_TYPES },
+  { HOLEFLAG, N ("hole"), PIN_TYPES },
+  { RATFLAG, N ("rat"), RATLINE_TYPE },
+  { PININPOLYFLAG, N ("pininpoly"), PIN_TYPES | PAD_TYPE },
+  { CLEARPOLYFLAG, N ("clearpoly"), POLYGON_TYPE },
+  { HIDENAMEFLAG, N ("hidename"), ELEMENT_TYPE },
+  { DISPLAYNAMEFLAG, N ("showname"), ELEMENT_TYPE },
+  { CLEARLINEFLAG, N ("clearline"), LINE_TYPE | ARC_TYPE | TEXT_TYPE },
+  { SELECTEDFLAG, N ("selected"), ALL_TYPES },
+  { ONSOLDERFLAG, N ("onsolder"), ELEMENT_TYPE | PAD_TYPE | TEXT_TYPE },
+  { AUTOFLAG, N ("auto"), ALL_TYPES },
+  { SQUAREFLAG, N ("square"), PIN_TYPES | PAD_TYPE },
+  { RUBBERENDFLAG, N ("rubberend"), LINE_TYPE | ARC_TYPE },
+  { WARNFLAG, N ("warn"), PIN_TYPES | PAD_TYPE },
+  { USETHERMALFLAG, N ("usetherm"), PIN_TYPES | LINE_TYPE | ARC_TYPE },
+  { OCTAGONFLAG, N ("octagon"), PIN_TYPES | PAD_TYPE },
+  { DRCFLAG, N ("drc"), ALL_TYPES },
+  { LOCKFLAG, N ("lock"), ALL_TYPES },
+  { EDGE2FLAG, N ("edge2"), ALL_TYPES },
+  { FULLPOLYFLAG, N ("fullpoly"), POLYGON_TYPE},
+  { NOPASTEFLAG, N ("nopaste"), PAD_TYPE },
+  { CONNECTEDFLAG, N ("connected"), ALL_TYPES }
+};*/
+
+typedef enum eSymFlag {
+  NONE       = 0,
+  HOLE       =0x00000001,
+  USETHERMAL =0x00000002,  /* draw pin, via with thermal fingers */
+  SQUARE     =0x00000100,
+  OCTAGON    =0x00000200,
+  ONSOLDER   =0x00010000,
+  EDGE2      =0x01000000
+} eSymFlag;
 
 typedef struct sPin {
   sVTAB vtab;
   char* Name;
   char* Number;
-  char* Flags;
+  eSymFlag Flags;
   int X;
   int Y;
   int Thickness;
@@ -33,7 +70,7 @@ typedef struct sPin {
 sPin* pin_new(int X,int Y,
   int Thickness,int Clearance, int Mask,
   int Hole,
-  char*Name,char* Number, char* Flags);
+  char*Name,char* Number, eSymFlag Flags);
 void pin_delete(sPin* pad);
 void pin_draw(sPin*p, cairo_t* cr, sView* view);
 
