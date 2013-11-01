@@ -1,4 +1,6 @@
 default: fcad
+line.o: line.c line.h view.h types.h
+	gcc line.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
 pad.o:  pad.c pad.h view.h types.h
 	gcc pad.c -c `pkg-config --cflags  gtk+-3.0` -O3
@@ -21,8 +23,9 @@ ruler.o: ruler.c ruler.h view.h types.h
 fcad.o: fcad.c view.h ruler.h pad.h types.h
 	gcc fcad.c -c `pkg-config --cflags  gtk+-3.0` -O3
 	
-fcad: fcad.o view.o  ruler.o grid.o element.o pad.o pin.o
-	gcc -g -o fcad fcad.o view.o  ruler.o grid.o element.o pad.o pin.o\
+fcad: fcad.o view.o  ruler.o grid.o element.o pad.o pin.o line.o
+	gcc -g -o fcad fcad.o view.o  ruler.o grid.o element.o pad.o \
+	pin.o line.o \
 	  `pkg-config --libs gtk+-3.0` -export-dynamic -O3
 
 clean:
