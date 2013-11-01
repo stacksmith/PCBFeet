@@ -42,7 +42,7 @@ typedef struct sView {
   struct sElement* element;
   // all coordinates here are in the doc coordinate system
   sPoint origin;
-  float scale;  //this many centimils to a pixel
+  int scale;  //this many centimils to a pixel
 
   sGrid grid;
   

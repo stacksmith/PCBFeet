@@ -31,8 +31,8 @@ void grid_calc(GtkWidget *canvas, cairo_t *cr, sView* view){
 }
 void grid_draw(GtkWidget *canvas, cairo_t *cr, sView* view){
   sGrid* grid = &view->grid;
-  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
-  cairo_set_source_rgb(cr, .5,.5,.5);
+//  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
+  cairo_set_source_rgb(cr, 0,0,0);
   cairo_set_line_width(cr, 1);
   int x,y;
   cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND);
@@ -53,27 +53,27 @@ void grid_draw(GtkWidget *canvas, cairo_t *cr, sView* view){
   //draw the four quadrants
   for(y=start.y; y<view->height; y+=px_unit){   //lower
     for(x=start.x; x<view->width; x+=px_unit){  //right
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-          w++;h++;
+      cairo_move_to(cr, x,y);
+      cairo_line_to(cr, x,y);
+      w++;h++;
     }
     for(x=start.x; x>=0; x-=px_unit){            //lower left
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-          w++;h++;
+      cairo_move_to(cr, x,y);
+      cairo_line_to(cr, x,y);
+      w++;h++;
     } 
   } 
   grid->pxOrigin.x = x+px_unit;          //set grid's leftmost position
   for(y=start.y; y>=0; y-=px_unit){
     for(x=start.x; x<view->width; x+=px_unit){
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-          w++;h++;
+      cairo_move_to(cr, x,y);
+      cairo_line_to(cr, x,y);
+      w++;h++;
     }
     for(x=start.x; x>=0; x-=px_unit){
-          cairo_move_to(cr, x-1, y);
-          cairo_line_to(cr, x,y);
-          w++;h++;
+      cairo_move_to(cr, x,y);
+      cairo_line_to(cr, x,y);
+      w++;h++;
     }
   }
   grid->pxOrigin.y = y+px_unit;          //set grid's topmost position
@@ -90,6 +90,8 @@ void grid_draw(GtkWidget *canvas, cairo_t *cr, sView* view){
 printf("grid_draw2 nearest(%d %d) distance %f\n",grid->nearest.point.x,grid->nearest.point.y,
   grid->nearest.distance);
 
+  cairo_stroke(cr);    
+  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
 
   cairo_move_to(cr,grid->nearest.point.x,0);
   cairo_line_to(cr,grid->nearest.point.x,view->height);

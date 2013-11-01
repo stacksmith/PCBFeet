@@ -36,8 +36,8 @@ void view_initialize(sView* view,const char* uiname){
   view->origin.y=-10000;
   view->scale = 100;
 
-  view->grid.origin.x=0;
-  view->grid.origin.y=0;
+  view->grid.origin.x=4000;
+  view->grid.origin.y=4000;
   view->grid.unit = 1000;
   
   view->pxMouse.x = 0;
@@ -147,11 +147,11 @@ extern gboolean canvas_scroll_event_cb(GtkWidget* canvas,GdkEventScroll* event,s
 //  int pix_x =  view->grid.origin.x/view->scale - view->origin.x/view->scale;
   switch(dir){
     case GDK_SCROLL_UP: 
-      newscale = view->scale*.9;
-      if(newscale<.1) newscale=.1;
+      newscale = view->scale-(view->scale/10+1);//*.9;
+      if(newscale<1) newscale=1;
       break;
     case GDK_SCROLL_DOWN: 
-      newscale = view->scale*1.1;
+      newscale = view->scale+(view->scale/10+1);//1.1;
       break;
     default: return FALSE;
   }
@@ -161,7 +161,7 @@ extern gboolean canvas_scroll_event_cb(GtkWidget* canvas,GdkEventScroll* event,s
   //adjust the view origin so that the mouse is in the same place
   
   gtk_widget_queue_draw(canvas);
-  printf("SCROLLED %f\n",view->scale);
+  printf("SCROLLED %d\n",view->scale);
   gtk_widget_queue_draw(view->hruler); //redraw ruler
   gtk_widget_queue_draw(view->vruler); //redraw ruler
   return FALSE;

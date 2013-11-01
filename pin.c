@@ -61,8 +61,8 @@ void pin_draw(sPin*pin, cairo_t* cr, sView* view){
   printf("pin_draw 1\n");
   cairo_new_sub_path(cr);
   cairo_arc(cr,
-    (pin->X-view->origin.x)/view->scale,
-    (pin->Y-view->origin.y)/view->scale,
+    (double)(pin->X-view->origin.x)/(double)view->scale,
+    (double)(pin->Y-view->origin.y)/(double)view->scale,
     radius/view->scale,
     0,2 * M_PI);
  
