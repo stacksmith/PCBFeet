@@ -18,12 +18,6 @@
 ******************************************************************************/
 /* pad */
 
-struct sPad;
-typedef void (*ptrDraw)(struct sPad*, cairo_t*,sView*);
-typedef struct sVTAB {
-  ptrDraw draw;
-} sVTAB;
-
 typedef struct sPad {
   sVTAB vtab;
   char* Name;

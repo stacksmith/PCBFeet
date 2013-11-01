@@ -21,47 +21,50 @@
 
 #include "types.h"
 #include "view.h"
+#include "vtab.h"
 #include "pin.h"
+#include <math.h>
 
 
-sPad* pin_new(int X,int Y,
+
+sPin* pin_new(int X,int Y,
   int Thickness,int Clearance, int Mask,
   int Hole,
   char*Name,char* Number, char* Flags){
   
-  sPad* pin = (sPad*)g_malloc(sizeof(sPad));
-  pin->vtab.draw = &pin_draw;
+  sPin* pin = (sPin*)g_malloc(sizeof(sPin));
+  pin->vtab.draw = (ptrDraw)&pin_draw;
   pin->X      = X;
   pin->Y      = Y;
   pin->Thickness = Thickness;
   pin->Clearance = Clearance;
   pin->Mask   = Mask; 
-  pin->Hole   = Hole
+  pin->Hole   = Hole;
   pin->Name   = Name;
   pin->Number = Number;
   pin->Flags  = Flags;
   return pin;
 }
-void pin_delete(sPad* pin){
+void pin_delete(sPin* pin){
   g_free(pin);
 }
 
 
-void pin_draw(sPad*pin, cairo_t* cr, sView* view){
+void pin_draw(sPin*pin, cairo_t* cr, sView* view){
   printf("pin_draw %p\n",pin);
   int width = (pin->Thickness - pin->Hole)/2; //pad diameter-hole diameter/2
-  radius = (pin->Hole + width)/2;
+  int radius = (pin->Hole + width)/2;
   //manually scale here
-  cairo_set_line_cap(cr,CAIRO_LINE_CAP_SQUARE);
+  cairo_set_line_cap(cr,CAIRO_LINE_CAP_BUTT);
   cairo_set_source_rgb(cr, 0,.6, 0);
   cairo_set_line_width(cr, width /view->scale);
   printf("pin_draw 1\n");
-  
+  cairo_new_sub_path(cr);
   cairo_arc(cr,
     (pin->X-view->origin.x)/view->scale,
     (pin->Y-view->origin.y)/view->scale,
-    radius,
-    0,360);
+    radius/view->scale,
+    0,2 * M_PI);
  
   cairo_stroke(cr);    
 }

@@ -16,11 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-struct sPin;
-typedef void (*ptrDraw)(struct sPin*, cairo_t*,sView*);
-typedef struct sVTAB {
-  ptrDraw draw;
-} sVTAB;
 
 typedef struct sPin {
   sVTAB vtab;
@@ -29,10 +24,11 @@ typedef struct sPin {
   char* Flags;
   int X;
   int Y;
+  int Thickness;
   int Clearance;   //separation of pad from other conductors (50%)
   int Mask;
   int Hole;
-} sPad;
+} sPin;
 
 sPin* pin_new(int X,int Y,
   int Thickness,int Clearance, int Mask,

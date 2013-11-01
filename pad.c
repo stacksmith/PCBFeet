@@ -21,6 +21,7 @@
 
 #include "types.h"
 #include "view.h"
+#include "vtab.h"
 #include "pad.h"
 
 
@@ -29,7 +30,7 @@ sPad* pad_new(int X1,int Y1,int X2,int Y2,
   char*Name,char* Number, char* Flags){
   
   sPad* pad = (sPad*)g_malloc(sizeof(sPad));
-  pad->vtab.draw = &pad_draw;
+  pad->vtab.draw = (ptrDraw)&pad_draw;  //comply with generic vtab func 
 
   pad->Name   = Name;
   pad->Number = Number;
