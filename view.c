@@ -23,7 +23,7 @@
 
 #include "types.h"
 #include "view.h"
-#include "pad.h"
+//#include "pad.h"
 
 //sPad*pad;
 

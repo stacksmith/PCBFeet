@@ -29,10 +29,9 @@
 void grid_calc(GtkWidget *canvas, cairo_t *cr, sView* view){
   
 }
-
 void grid_draw(GtkWidget *canvas, cairo_t *cr, sView* view){
   sGrid* grid = &view->grid;
-//  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
+  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
   cairo_set_source_rgb(cr, .5,.5,.5);
   cairo_set_line_width(cr, 1);
   int x,y;
