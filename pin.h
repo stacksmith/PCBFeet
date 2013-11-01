@@ -45,10 +45,10 @@
 };*/
 
 typedef enum ePinShape {
-  HOLE,
-  ROUND,
-  SQUARE,
-  OCTAGON
+  PIN_HOLE,
+  PIN_ROUND,
+  PIN_SQUARE,
+  PIN_OCTAGON
 } ePinShape;
 
 

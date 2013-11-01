@@ -62,7 +62,7 @@ void pin_draw(sPin*pin, cairo_t* cr, sView* view){
     cairo_set_line_width(cr, .01);
     //Draw the outer shape
   switch(pin->Shape ){
-    case ROUND:
+    case PIN_ROUND:
 printf("pin_draw round\n");
       cairo_new_sub_path(cr);
       cairo_arc(cr,
@@ -72,14 +72,14 @@ printf("pin_draw round\n");
         0,2 * M_PI);
       cairo_fill(cr);
       break;
-    case SQUARE:
+    case PIN_SQUARE:
       cairo_rectangle(cr,
          (pin->X-rad_outer-view->origin.x)/view->scale +.5,
          (pin->Y-rad_outer-view->origin.y)/view->scale +.5,
          pin->Thickness/view->scale +.5,pin->Thickness/view->scale +.5);                      
       cairo_fill(cr);
       break;
-    case OCTAGON:
+    case PIN_OCTAGON:
 printf("pin_draw octa\n");
       break;
     default:

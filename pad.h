@@ -17,24 +17,28 @@
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 /* pad */
+typedef enum ePadShape {
+  PAD_ROUND,
+  PAD_SQUARE,
+} ePadShape;
 
 typedef struct sPad {
   sVTAB vtab;
   char* Name;
   char* Number;
-  char* Flags;
   int X1;
   int Y1;
   int X2;
   int Y2;
   int Thickness;   //Width of metal 
   int Clearance;   //separation of pad from other conductors (50%)
-  int Mask;
+  int Mask;   //separation of pad from other conductors (50%)
+  ePadShape Shape;
 } sPad;
 
 sPad* pad_new(int X1,int Y1,int X2,int Y2,
   int Thickness,int Clearance, int Mask,
-  char*Name,char* Number, char* Flags);
+  char*Name,char* Number, ePadShape Shape);
 void pad_delete(sPad* pad);
 void pad_draw(sPad*p, cairo_t* cr, sView* view);
 
