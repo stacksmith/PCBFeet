@@ -18,7 +18,6 @@
 ******************************************************************************/
 #include <cairo.h>
 #include <gtk/gtk.h>
-#include <malloc.h>
 
 #include "types.h"
 #include "view.h"
@@ -26,11 +25,12 @@
 
 
 sPad* pad_new(){
-  sPad* pad = (sPad*)malloc(sizeof(sPad));
+  sPad* pad = (sPad*)g_malloc(sizeof(sPad));
+  pad->draw = &pad_draw;
   return pad;
 }
 void pad_delete(sPad* pad){
-  free(pad);
+  g_free(pad);
 }
 //TODO:this is temporary
 void pad_init(sPad* p){
@@ -54,11 +54,12 @@ void pad_set(sPad* p, char*Name,char* Number, char* Flags,
 
 
 void pad_draw(sPad*pad, cairo_t* cr, sView* view){
-  printf("pad_draw\n");
+  printf("pad_draw %p\n",pad);
   //manually scale here
   cairo_set_line_cap(cr,CAIRO_LINE_CAP_SQUARE);
   cairo_set_source_rgb(cr, 0,.6, 0);
   cairo_set_line_width(cr, pad->Thickness/view->scale);
+  printf("pad_draw 1\n");
   
   // convert native centimils to pixels
   cairo_move_to(cr,

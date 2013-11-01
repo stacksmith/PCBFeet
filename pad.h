@@ -17,17 +17,20 @@
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 /* pad */
+struct sPad;
+typedef void (*ptrDraw)(struct sPad*, cairo_t*,sView*);
 typedef struct sPad {
+  ptrDraw draw;
   char* Name;
   char* Number;
   char* Flags;
-  double X1;
-  double Y1;
-  double X2;
-  double Y2;
-  double Thickness;   //Width of metal 
-  double Clearance;   //separation of pad from other conductors (50%)
-  double Mask;
+  int X1;
+  int Y1;
+  int X2;
+  int Y2;
+  int Thickness;   //Width of metal 
+  int Clearance;   //separation of pad from other conductors (50%)
+  int Mask;
 } sPad;
 
 sPad* pad_new();

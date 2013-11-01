@@ -86,7 +86,7 @@ printf("cadwin_draw %d %d\n",gtk_widget_get_allocated_width(widget),
   cairo_stroke(cr);    
 */
 //  pad_draw(pad,cr,view);
-  element_draw(view->element);
+  element_draw(view->element,cr,view);
   grid_draw(widget,cr,view);
   //draw the targeting lines
   int x,y;

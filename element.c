@@ -23,7 +23,7 @@
 #include "view.h"
 #include "pad.h"
 #include "element.h"
-
+sPad*pad;
 sElement* element_new(){
   sElement* ret = (sElement*)g_malloc(sizeof(sElement));
   return ret;
@@ -45,7 +45,7 @@ void element_init(sElement* el){
   el->textFlags = 0;
   el->data = NULL;
 
-  sPad* pad = pad_new();
+  pad = pad_new();
   pad_init(pad);
   element_add(el,pad);
   
@@ -57,6 +57,8 @@ void element_add(sElement*el,gpointer part){
 
 void element_draw(sElement*el, cairo_t* cr, sView* view){
   printf("element_draw\n");
+  pad->draw(pad,cr,view);
+  
  
   
 }
