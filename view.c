@@ -26,7 +26,8 @@
 //#include "pad.h"
 
 //sPad*pad;
-
+#include "element.h"
+#include "document.h"
 sView* view_new(){
   return (sView*)malloc(sizeof(sView));
 }
@@ -73,8 +74,7 @@ void view_initialize(sView* view,const char* uiname){
  * */
 extern gboolean canvas_draw_cb(GtkWidget *widget, cairo_t *cr, 
     sView* view){
-printf("cadwin_draw %d %d\n",gtk_widget_get_allocated_width(widget),
-  gtk_widget_get_allocated_height(widget));
+
 
   cairo_set_source_rgb(cr, 0, 0, 0);
   cairo_identity_matrix(cr);
@@ -86,7 +86,10 @@ printf("cadwin_draw %d %d\n",gtk_widget_get_allocated_width(widget),
   cairo_stroke(cr);    
 */
 //  pad_draw(pad,cr,view);
-  element_draw(view->element,cr,view);
+printf("cadwin_draw %p\n",view);
+printf("cadwin_draw %p\n",view->document);
+printf("cadwin_draw %p\n",view->document->element);
+  element_draw(view->document->element,cr,view);
   grid_draw(widget,cr,view);
   //draw the targeting lines
   int x,y;

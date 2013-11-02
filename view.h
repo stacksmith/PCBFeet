@@ -37,9 +37,10 @@ typedef struct sGrid {
   sPoint xyCnt;     //after drawing, x and y gridpoint count
 } sGrid;
 
-struct sElement;
+struct sDocument;
 typedef struct sView {
-  struct sElement* element;
+  
+  struct sDocument* document;
   // all coordinates here are in the doc coordinate system
   sPoint origin;
   int scale;  //this many centimils to a pixel

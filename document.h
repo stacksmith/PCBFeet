@@ -16,29 +16,10 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-#include <cairo.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
-
-#include "types.h"
-#include "view.h"
-#include "element.h"
-#include "document.h"
-
-
-
-int main(int argc, char *argv[])
-{
-  gtk_init(&argc, &argv);
-
-  sDocument* doc = doc_new();
-  sView* view = view_new();
-  view->document = doc;
-printf("set document to %p\n",doc);
-  view_initialize(view,"fcad.ui");
+typedef struct sDocument {
+  sElement* element;
   
-  gtk_main();
+} sDocument;
 
-  return 0;
-}
+sDocument* doc_new();
 
