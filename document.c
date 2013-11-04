@@ -32,62 +32,27 @@
 #include "document.h"
 
 /*****************************************************************************/
-// open brace or open paren TODO: set the multiplier...
-gboolean doc_parse_open(sDocument* doc, sParser* parse){
-  eTokType type = parser_token(parse);
-  if((type == TOK_BRACE_OPEN)||(type==TOK_PAREN_OPEN))
-    return TRUE;
-  return FALSE; 
-}
-gboolean doc_parse_close(sDocument* doc, sParser* parse){
-  eTokType type = parser_token(parse);
-  if((type == TOK_BRACE_CLOSE)||(type==TOK_PAREN_CLOSE))
-    return TRUE;
-  return FALSE; 
-}
-
-gboolean doc_parse_number(sDocument* doc, sParser* parse,int* pnum){
-  if(parser_token(parse) != TOK_NUMBER) return FALSE;
-  *pnum = parse->data.number;
-  return TRUE;
-}
-gboolean doc_parse_string(sDocument* doc, sParser* parse,GString** pstr){
-  if(parser_token(parse) != TOK_STRING) return FALSE;
-  *pstr = parse->data.string;
-  return TRUE;
-}
-
-/*****************************************************************************/
-// parse "x y " into point reference
-gboolean doc_parse_point(sDocument* doc,sParser*parse, sPoint* point){
-  if(parser_token(parse) != TOK_NUMBER) return FALSE;
-    point->x = parse->data.number;
-  if(parser_token(parse) != TOK_NUMBER) return FALSE;
-    point->y = parse->data.number;
-  return TRUE;
-}
-/*****************************************************************************/
 // parse PAD
 
 gboolean doc_parse_pad(sDocument* doc, sParser* parse){
-  if(!doc_parse_open(doc,parse)) return FALSE; //open brace...
+  if(!parser_help_open(parse)) return FALSE; //open brace...
   //create pad
   sPad* pad = pad_new();
   //pad points
-  if(!doc_parse_point(doc,parse,&pad->P1)) return FALSE;
-  if(!doc_parse_point(doc,parse,&pad->P2)) return FALSE;
+  if(!parser_help_point(parse,&pad->P1)) return FALSE;
+  if(!parser_help_point(parse,&pad->P2)) return FALSE;
   //Thickness,clearance, mask
-  if(!doc_parse_number(doc,parse,&pad->Thickness)) return FALSE;
-  if(!doc_parse_number(doc,parse,&pad->Clearance)) return FALSE;
-  if(!doc_parse_number(doc,parse,&pad->Mask)) return FALSE;
+  if(!parser_help_number(parse,&pad->Thickness)) return FALSE;
+  if(!parser_help_number(parse,&pad->Clearance)) return FALSE;
+  if(!parser_help_number(parse,&pad->Mask)) return FALSE;
   //name,number
-  if(!doc_parse_string(doc,parse,&pad->Name)) return FALSE;
-  if(!doc_parse_string(doc,parse,&pad->Number)) return FALSE;
+  if(!parser_help_string(parse,&pad->Name)) return FALSE;
+  if(!parser_help_string(parse,&pad->Number)) return FALSE;
   //Finally, the flags
   //TODO: handle pad flags
   parser_token(parse);
   pad->Shape = PAD_ROUND;
-  if(!doc_parse_close(doc,parse)) return FALSE; //closed brace...  
+  if(!parser_help_close(parse)) return FALSE; //closed brace...  
   element_add(doc->element,pad);  
 printf("doc_parse_pad: added  to element %p\n",doc->element);
   return TRUE;
@@ -96,40 +61,40 @@ printf("doc_parse_pad: added  to element %p\n",doc->element);
 // parse PIN, attach to element
 gboolean doc_parse_pin(sDocument* doc, sParser* parse){
 printf("doc_parse_pin: 1\n");
-  if(!doc_parse_open(doc,parse)) return FALSE; //open brace...
+  if(!parser_help_open(parse)) return FALSE; //open brace...
   //create pin
   sPin* pin = pin_new();
   //pin points q 
-  if(!doc_parse_point(doc,parse,&pin->P1)) return FALSE;
+  if(!parser_help_point(parse,&pin->P1)) return FALSE;
   //Thickness,clearance, mask
-  if(!doc_parse_number(doc,parse,&pin->Thickness)) return FALSE;
-  if(!doc_parse_number(doc,parse,&pin->Clearance)) return FALSE;
-  if(!doc_parse_number(doc,parse,&pin->Mask)) return FALSE;
+  if(!parser_help_number(parse,&pin->Thickness)) return FALSE;
+  if(!parser_help_number(parse,&pin->Clearance)) return FALSE;
+  if(!parser_help_number(parse,&pin->Mask)) return FALSE;
   //Hole
-  if(!doc_parse_number(doc,parse,&pin->Hole)) return FALSE;  
+  if(!parser_help_number(parse,&pin->Hole)) return FALSE;  
   //name,number
-  if(!doc_parse_string(doc,parse,&pin->Name)) return FALSE;
-  if(!doc_parse_string(doc,parse,&pin->Number)) return FALSE;
+  if(!parser_help_string(parse,&pin->Name)) return FALSE;
+  if(!parser_help_string(parse,&pin->Number)) return FALSE;
   //Finally, the flags
   //TODO: handle pin flags
   parser_token(parse);
   pin->Shape = PIN_ROUND;
-  if(!doc_parse_close(doc,parse)) return FALSE; //closed brace...
+  if(!parser_help_close(parse)) return FALSE; //closed brace...
   element_add(doc->element,pin);  
   return TRUE;
 }
 /*****************************************************************************/
 // parse LINE
 gboolean doc_parse_line(sDocument* doc, sParser* parse){
-  if(!doc_parse_open(doc,parse)) return FALSE; //open brace...
+  if(!parser_help_open(parse)) return FALSE; //open brace...
   //create pin
   sLine* line = line_new();
   //line points
-  if(!doc_parse_point(doc,parse,&line->P1)) return FALSE;
-  if(!doc_parse_point(doc,parse,&line->P2)) return FALSE;
+  if(!parser_help_point(parse,&line->P1)) return FALSE;
+  if(!parser_help_point(parse,&line->P2)) return FALSE;
   //Thickness
-  if(!doc_parse_number(doc,parse,&line->Thickness)) return FALSE;
-  if(!doc_parse_close(doc,parse)) return FALSE; //closed brace...  
+  if(!parser_help_number(parse,&line->Thickness)) return FALSE;
+  if(!parser_help_close(parse)) return FALSE; //closed brace...  
   element_add(doc->element,line);  
 printf("doc_parse_line: added line to element %p\n",doc->element);
   return TRUE;
@@ -139,30 +104,30 @@ printf("doc_parse_line: added line to element %p\n",doc->element);
 gboolean doc_parse_element(sDocument* doc, sParser* parse){
 printf("doc_parse_element: 1\n");
   eTokType type;
-  if(!doc_parse_open(doc,parse)) return FALSE; 
+  if(!parser_help_open(parse)) return FALSE; 
   //Create an element
   sElement* element = element_new();
   doc->element = element;
   //TODO: handle element flags.  For now, expect string
   if(parser_token(parse) != TOK_STRING) return FALSE;
   //description
-  if(!doc_parse_string(doc,parse,&element->description)) return FALSE;
+  if(!parser_help_string(parse,&element->description)) return FALSE;
   //name and value are not used here (PCB sets them)
   if(parser_token(parse) != TOK_STRING) return FALSE;
   if(parser_token(parse) != TOK_STRING) return FALSE;
   //mark x,y
-  if(!doc_parse_point(doc,parse,&element->markPos)) return FALSE;
+  if(!parser_help_point(parse,&element->markPos)) return FALSE;
   //text x,y
-  if(!doc_parse_point(doc,parse,&element->textPos)) return FALSE;
+  if(!parser_help_point(parse,&element->textPos)) return FALSE;
   //text dir (0,1,2,3 ccw)
-  if(!doc_parse_number(doc,parse,(int*)&element->textDir)) return FALSE;
+  if(!parser_help_number(parse,(int*)&element->textDir)) return FALSE;
    //text scale
-  if(!doc_parse_number(doc,parse,&element->textScale)) return FALSE;
+  if(!parser_help_number(parse,&element->textScale)) return FALSE;
   //text //
-  if(!doc_parse_string(doc,parse,&element->textFlags)) return FALSE;
+  if(!parser_help_string(parse,&element->textFlags)) return FALSE;
   //close element
-  if(!doc_parse_close(doc,parse)) return FALSE; 
-  if(!doc_parse_open(doc,parse)) return FALSE; 
+  if(!parser_help_close(parse)) return FALSE; 
+  if(!parser_help_open(parse)) return FALSE; 
 
   // now, the innards
   gboolean done=FALSE;

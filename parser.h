@@ -1,3 +1,5 @@
+
+
 typedef enum eTokType{
   TOK_EOF = 0,
   TOK_ELEMENT = 1,
@@ -39,3 +41,9 @@ char      parser_peek_char(sParser* parse);
 void      parser_ws(sParser* parse);
 eTokType parser_token(sParser* parse);
 gboolean parser_token_dump(sParser* parse);
+// helper (x) functions
+gboolean parser_help_open(sParser* parse);
+gboolean parser_help_close(sParser* parse);
+gboolean parser_help_number(sParser* parse,int* pnum);
+gboolean parser_help_string(sParser* parse,GString** pstr);
+gboolean parser_help_point(sParser*parse, sPoint* point);

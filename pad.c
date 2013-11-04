@@ -75,4 +75,9 @@ void pad_draw(sPad*pad, cairo_t* cr, sView* view){
   cairo_stroke(cr);    
 }
 
+/*****************************************************************************/
+// parse PAD from text...
+gboolean pad_parse(sPad* pad,sView* view){
+}
+
 

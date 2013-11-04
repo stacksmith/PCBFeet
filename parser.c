@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 
+#include "types.h"
 #include "parser.h"
 #include <string.h>
 
@@ -215,3 +216,47 @@ gboolean parser_token_dump(sParser*parse){
   return TRUE;
 }
     
+/*****************************************************************************
+******************************************************************************
+*****************************************************************************/
+// x Helper functions for parsing 
+
+/*****************************************************************************/
+// open - parse ( or [ and return TRUE. 
+gboolean parser_help_open(sParser* parse){
+  parser_token(parse);
+  if((parse->type == TOK_BRACE_OPEN)||(parse->type==TOK_PAREN_OPEN))
+    return TRUE;
+  return FALSE; 
+}
+/*****************************************************************************/
+// close - parse ) or ] and return TRUE
+gboolean parser_help_close(sParser* parse){
+  parser_token(parse);
+  if((parse->type == TOK_BRACE_CLOSE)||(parse->type==TOK_PAREN_CLOSE))
+    return TRUE;
+  return FALSE; 
+}
+/*****************************************************************************/
+// number - parse numeric value into the  int*
+gboolean parser_help_number(sParser* parse,int*pnum){
+  if(parser_token(parse) != TOK_NUMBER) return FALSE;
+  *pnum = parse->data.number;
+  return TRUE;
+}
+/*****************************************************************************/
+// string - parse a string into the  GString*
+gboolean parser_help_string(sParser* parse,GString** pstr){
+  if(parser_token(parse) != TOK_STRING) return FALSE;
+  *pstr = parse->data.string;
+  return TRUE;
+}
+/*****************************************************************************/
+// point - parse an x y pair into the  sPoint*
+gboolean parser_help_point(sParser*parse, sPoint* point){
+  if(parser_token(parse) != TOK_NUMBER) return FALSE;
+    point->x = parse->data.number;
+  if(parser_token(parse) != TOK_NUMBER) return FALSE;
+    point->y = parse->data.number;
+  return TRUE;
+}
