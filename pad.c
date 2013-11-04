@@ -24,20 +24,22 @@
 #include "vtab.h"
 #include "pad.h"
 
-
-sPad* pad_new(int X1,int Y1,int X2,int Y2,
-  int Thickness,int Clearance, int Mask,
-  char*Name,char* Number,   ePadShape Shape){
-  
-  sPad* pad = (sPad*)g_malloc(sizeof(sPad));
+sPad* pad_new(){
+  sPad* pad = (sPad*)g_malloc0(sizeof(sPad));
   pad->vtab.draw = (ptrDraw)&pad_draw;  //comply with generic vtab func 
+  return pad;
+}
+sPad* pad_init(sPad* pad,int X1,int Y1,int X2,int Y2,
+  int Thickness,int Clearance, int Mask,
+  GString*Name,GString* Number,   ePadShape Shape){
+  
 
   pad->Name   = Name;
   pad->Number = Number;
-  pad->X1     = X1;
-  pad->Y1     = Y1;
-  pad->X2     = X2;
-  pad->Y2     = Y2;
+  pad->P1.x     = X1;
+  pad->P1.y     = Y1;
+  pad->P2.x     = X2;
+  pad->P2.y     = Y2;
   pad->Thickness = Thickness;
   pad->Clearance = Clearance;
   pad->Mask = Mask;
@@ -64,11 +66,11 @@ void pad_draw(sPad*pad, cairo_t* cr, sView* view){
   
   // convert native centimils to pixels
   cairo_move_to(cr,
-    (pad->X1-view->origin.x)/view->scale+.5,
-    (pad->Y1-view->origin.y)/view->scale+.5);
+    (pad->P1.x-view->origin.x)/view->scale+.5,
+    (pad->P1.y-view->origin.y)/view->scale+.5);
   cairo_line_to(cr,
-    (pad->X2-view->origin.x)/view->scale+.5,
-    (pad->Y2-view->origin.y)/view->scale+.5);
+    (pad->P2.x-view->origin.x)/view->scale+.5,
+    (pad->P2.y-view->origin.y)/view->scale+.5);
  
   cairo_stroke(cr);    
 }

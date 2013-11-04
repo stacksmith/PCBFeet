@@ -29,7 +29,7 @@ typedef struct sElement {
   sPoint       textPos;         //position of text
   eTextDir     textDir;
   unsigned int textScale;
-  unsigned int textFlags; 
+  GString*     textFlags; 
   GSList*      data;            //a linked list of data parts
   
 } sElement;

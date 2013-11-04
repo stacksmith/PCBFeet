@@ -24,17 +24,19 @@
 #include "vtab.h"
 #include "line.h"
 
-
-sLine* line_new(int X1,int Y1,int X2,int Y2,
+sLine* line_new(){
+  sLine* line =  (sLine*)g_malloc0(sizeof(sLine));
+  line->vtab.draw = (ptrDraw)&line_draw;  //comply with generic vtab func 
+  return line;
+}
+sLine* line_init(sLine*line,int X1,int Y1,int X2,int Y2,
   int Thickness){
   
-  sLine* line = (sLine*)g_malloc(sizeof(sLine));
-  line->vtab.draw = (ptrDraw)&line_draw;  //comply with generic vtab func 
 
-  line->X1     = X1;
-  line->Y1     = Y1;
-  line->X2     = X2;
-  line->Y2     = Y2;
+  line->P1.x     = X1;
+  line->P1.y     = Y1;
+  line->P2.x     = X2;
+  line->P2.y     = Y2;
   line->Thickness = Thickness;
 
   return line;
@@ -54,11 +56,11 @@ void line_draw(sLine*line, cairo_t* cr, sView* view){
   
   // convert native centimils to pixels
   cairo_move_to(cr,
-    (line->X1-view->origin.x)/view->scale,
-    (line->Y1-view->origin.y)/view->scale);
+    (line->P1.x-view->origin.x)/view->scale,
+    (line->P1.y-view->origin.y)/view->scale);
   cairo_line_to(cr,
-    (line->X2-view->origin.x)/view->scale,
-    (line->Y2-view->origin.y)/view->scale);
+    (line->P2.x-view->origin.x)/view->scale,
+    (line->P2.y-view->origin.y)/view->scale);
  
   cairo_stroke(cr);    
 }

@@ -24,21 +24,20 @@ typedef enum ePadShape {
 
 typedef struct sPad {
   sVTAB vtab;
-  char* Name;
-  char* Number;
-  int X1;
-  int Y1;
-  int X2;
-  int Y2;
+  GString* Name;
+  GString* Number;
+  sPoint P1;
+  sPoint P2;
   int Thickness;   //Width of metal 
   int Clearance;   //separation of pad from other conductors (50%)
   int Mask;   //separation of pad from other conductors (50%)
   ePadShape Shape;
 } sPad;
 
-sPad* pad_new(int X1,int Y1,int X2,int Y2,
+sPad* pad_new();
+sPad* pad_init(sPad* pad,int X1,int Y1,int X2,int Y2,
   int Thickness,int Clearance, int Mask,
-  char*Name,char* Number, ePadShape Shape);
+  GString*Name,GString* Number, ePadShape Shape);
 void pad_delete(sPad* pad);
 void pad_draw(sPad*p, cairo_t* cr, sView* view);
 

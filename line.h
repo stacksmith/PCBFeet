@@ -20,14 +20,13 @@
 
 typedef struct sLine {
   sVTAB vtab;
-  int X1;
-  int Y1;
-  int X2;
-  int Y2;
+  sPoint P1;
+  sPoint P2;
   int Thickness; 
 } sLine;
 
-sLine* line_new(int X1,int Y1,int X2,int Y2,
+sLine* line_new();
+sLine* line_init(sLine*line,int X1,int Y1,int X2,int Y2,
   int Thickness);
 void line_delete(sLine* pad);
 void line_draw(sLine*p, cairo_t* cr, sView* view);

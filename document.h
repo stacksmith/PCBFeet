@@ -16,10 +16,14 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
+typedef struct sParser sParser;
 typedef struct sDocument {
   sElement* element;
   
 } sDocument;
 
 sDocument* doc_new();
+void       doc_init  (sDocument* doc);
+gboolean   doc_parse (sDocument* doc, sParser* parse);
+
 

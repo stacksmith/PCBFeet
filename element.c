@@ -32,7 +32,8 @@ typedef struct sVTAB {
 
 
 sElement* element_new(){
-  sElement* ret = (sElement*)g_malloc(sizeof(sElement));
+  sElement* ret = (sElement*)g_malloc0(sizeof(sElement));
+  
   return ret;
 }
 
@@ -49,22 +50,24 @@ void element_init(sElement* el){
   el->textPos.y = 2200;
   el->textDir = TEXT_HOR;
   el->textScale = 100;
-  el->textFlags = 0;
+  el->textFlags = g_string_new("");
   el->data = NULL;
-
-  
 }
 
 void element_add(sElement*el,gpointer part){
   el->data = g_slist_prepend(el->data,part);
 }
 void element_draw(sElement*el, cairo_t* cr, sView* view){
-  printf("element_draw\n");
+  printf("element_draw %p\n",el);
   GSList* item = el->data;
   while(item){
+printf("element_draw: itemloop in:ITEM: %p\n",item);
     sVTAB* drawable = ((sVTAB*)item->data);
+printf("element_draw: itemloop 1:drawable: %p\n",drawable);
     drawable->draw(drawable,cr,view);
+printf("element_draw: itemloop 2:\n");
     item = item->next;
+printf("element_draw: itemloop out:ITEM: %p\n",item);
   }
     
 //  sPad* pad = ((sPad*)el->data->data);

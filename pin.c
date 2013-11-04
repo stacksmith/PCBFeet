@@ -25,17 +25,19 @@
 #include "pin.h"
 #include <math.h>
 
+sPin* pin_new(){
+  sPin* pin = (sPin*)g_malloc0(sizeof(sPin));
+  pin->vtab.draw = (ptrDraw)&pin_draw;//comply with generic vtab func 
+  return pin;
+}
 
-
-sPin* pin_new(int X,int Y,
+sPin* pin_init(sPin* pin, int X,int Y,
   int Thickness,int Clearance, int Mask,
   int Hole,
-  char*Name,char* Number,  ePinShape Shape){
+  GString*Name,GString* Number,  ePinShape Shape){
   
-  sPin* pin = (sPin*)g_malloc(sizeof(sPin));
-  pin->vtab.draw = (ptrDraw)&pin_draw;//comply with generic vtab func 
-  pin->X      = X;
-  pin->Y      = Y;
+  pin->P1.x      = X;
+  pin->P1.y      = Y;
   pin->Thickness = Thickness;
   pin->Clearance = Clearance;
   pin->Mask   = Mask; 
@@ -51,7 +53,7 @@ void pin_delete(sPin* pin){
 
 
 void pin_draw(sPin*pin, cairo_t* cr, sView* view){
-  printf("pin_draw %p\n",pin);
+printf("pin_draw in:%p\n",pin);
   int rad_outer = pin->Thickness/2;
   int rad_inner = pin->Hole/2;
 //  int width = (pin->Thickness - pin->Hole)/2; //pad diameter-hole diameter/2
@@ -66,16 +68,16 @@ void pin_draw(sPin*pin, cairo_t* cr, sView* view){
 printf("pin_draw round\n");
       cairo_new_sub_path(cr);
       cairo_arc(cr,
-        (pin->X-view->origin.x)/view->scale +.5,
-        (pin->Y-view->origin.y)/view->scale +.5,
+        (pin->P1.x-view->origin.x)/view->scale +.5,
+        (pin->P1.y-view->origin.y)/view->scale +.5,
         rad_outer/view->scale,
         0,2 * M_PI);
       cairo_fill(cr);
       break;
     case PIN_SQUARE:
       cairo_rectangle(cr,
-         (pin->X-rad_outer-view->origin.x)/view->scale +.5,
-         (pin->Y-rad_outer-view->origin.y)/view->scale +.5,
+         (pin->P1.x-rad_outer-view->origin.x)/view->scale +.5,
+         (pin->P1.y-rad_outer-view->origin.y)/view->scale +.5,
          pin->Thickness/view->scale +.5,pin->Thickness/view->scale +.5);                      
       cairo_fill(cr);
       break;
@@ -90,8 +92,8 @@ printf("pin_draw illegal\n");
     cairo_set_source_rgb(cr, 1,1,1);
     cairo_new_sub_path(cr);
     cairo_arc(cr,
-      (pin->X-view->origin.x)/view->scale +.5,
-      (pin->Y-view->origin.y)/view->scale +.5,
+      (pin->P1.x-view->origin.x)/view->scale +.5,
+      (pin->P1.y-view->origin.y)/view->scale +.5,
       rad_inner/view->scale,
       0,2 * M_PI);
       cairo_fill(cr);

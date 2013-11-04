@@ -32,6 +32,9 @@ int main(int argc, char *argv[])
   gtk_init(&argc, &argv);
 
   sDocument* doc = doc_new();
+  doc_init(doc);
+//return 0;
+
   sView* view = view_new();
   view->document = doc;
 printf("set document to %p\n",doc);

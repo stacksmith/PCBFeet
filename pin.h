@@ -54,10 +54,9 @@ typedef enum ePinShape {
 
 typedef struct sPin {
   sVTAB vtab;
-  char* Name;
-  char* Number;
-  int X;
-  int Y;
+  GString* Name;
+  GString* Number;
+  sPoint P1;
   int Thickness;
   int Clearance;   //separation of pad from other conductors (50%)
   int Mask;
@@ -65,10 +64,11 @@ typedef struct sPin {
   ePinShape Shape;
 } sPin;
 
-sPin* pin_new(int X,int Y,
+sPin* pin_new();
+sPin* pin_init(sPin* pin,int X,int Y,
   int Thickness,int Clearance, int Mask,
   int Hole,
-  char*Name,char* Number, ePinShape Shape);
+  GString*Name,GString* Number, ePinShape Shape);
 void pin_delete(sPin* pad);
 void pin_draw(sPin*p, cairo_t* cr, sView* view);
 
