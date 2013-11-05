@@ -23,14 +23,16 @@
 
 #include "types.h"
 #include "view.h"
-//#include "pad.h"
 
 //sPad*pad;
 #include "element.h"
 #include "document.h"
 sView* view_new(){
-  return (sView*)malloc(sizeof(sView));
+  return (sView*)g_malloc0(sizeof(sView));
 }
+//TODO: get rid of this
+extern GtkWidget* pin_create_config();
+
 void view_initialize(sView* view,const char* uiname){
   
   view->origin.x=-10000;
@@ -59,14 +61,20 @@ void view_initialize(sView* view,const char* uiname){
   view->vruler = (GtkWidget*)gtk_builder_get_object (builder, "vruler");
   view->status_xy = (GtkLabel*)gtk_builder_get_object (builder, "status_xy");
   view->but_origin = (GtkWidget*)gtk_builder_get_object (builder, "but_origin");
+  view->objects  =   (GtkWidget*)gtk_builder_get_object (builder, "objects");
+printf("=================%p\n",view->objects);
+  gtk_container_add((GtkContainer*)view->objects,pin_create_config());
 //  gtk_drag_source_set(view->but_origin,GDK_BUTTON1_MASK,NULL,0,GDK_ACTION_PRIVATE);
   gtk_builder_connect_signals(builder,view);
   /* Exit when the window is closed */
   g_signal_connect (view->frame, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
+  gtk_widget_show_all(view->frame);
   //TODO: delete builder
   view->width = gtk_widget_get_allocated_width(view->canvas);
   view->height = gtk_widget_get_allocated_height(view->canvas);
+  
+  
 }
 
 /*****************************************************************************/
@@ -202,3 +210,5 @@ void vbar_adj_value_changed_cb(GtkAdjustment* adj,gpointer user_data){
 void hbar_adj_value_changed_cb(GtkAdjustment* adj,gpointer user_data){
   printf("vert adj: %f\n",gtk_adjustment_get_value(adj));
 }
+
+

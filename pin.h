@@ -72,5 +72,6 @@ sPin* pin_init(sPin* pin,int X,int Y,
   GString*Name,GString* Number, ePinShape Shape);
 void pin_delete(sPin* pad);
 void pin_draw(sPin*p, cairo_t* cr, sView* view);
+GtkWidget* pin_create_config();
 
 

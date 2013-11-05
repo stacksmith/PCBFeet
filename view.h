@@ -61,7 +61,7 @@ typedef struct sView {
   GtkWidget* vruler;
   GtkLabel*  status_xy;  //display coordinates
   GtkWidget* but_origin;
-  
+  GtkWidget* objects;    //vbox with obj descriptions
   
 } sView;
 

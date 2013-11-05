@@ -139,3 +139,13 @@ printf("pin_draw illegal\n");
 }
 
 
+GtkWidget* pin_create_config(){
+  GtkWidget* frame = gtk_frame_new("Pin ");
+  gtk_frame_set_shadow_type((GtkFrame*)frame,GTK_SHADOW_IN);
+  gtk_frame_set_label_align ((GtkFrame*)frame,0,0.25);
+  GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL,0); //box to contain object info
+  gtk_container_add((GtkContainer*)frame,vbox); //add vbox to frame
+  gtk_container_add((GtkContainer*)vbox,gtk_label_new("whatever:"));
+  return frame;
+}
+
