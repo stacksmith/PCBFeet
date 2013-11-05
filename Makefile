@@ -2,19 +2,19 @@ default: fcad
 parser.o: parser.c parser.h
 	gcc parser.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-document.o: document.c document.h element.h view.h types.h
+document.o: document.c document.h element.h view.h types.h parser.h
 	gcc document.c -c `pkg-config --cflags  gtk+-3.0` -O3
 	
-line.o: line.c line.h view.h types.h parser.h vtab.h
+line.o: line.c line.h view.h types.h parser.h vtab.h parser.h
 	gcc line.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-pad.o:  pad.c pad.h view.h types.h parser.h vtab.h
+pad.o:  pad.c pad.h view.h types.h parser.h vtab.h parser.h
 	gcc pad.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-pin.o:  pin.c pin.h view.h types.h parser.h vtab.h
+pin.o:  pin.c pin.h view.h types.h parser.h vtab.h parser.h
 	gcc pin.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-element.o: element.c element.h view.h pad.h types.h
+element.o: element.c element.h view.h pad.h pin.h line.h vtab.h parser.h types.h
 	gcc element.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
 grid.o: grid.c view.h types.h

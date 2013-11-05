@@ -31,81 +31,6 @@
 #include "line.h"
 #include "document.h"
 
-/*****************************************************************************/
-// parse PAD
-
-gboolean doc_parse_pad(sDocument* doc, sParser* parse){
-  sPad* pad = pad_parse(parse);
-  if(!pad) return FALSE;
-  element_add(doc->element,pad);  
-printf("doc_parse_pad: added  to element %p\n",doc->element);
-  return TRUE;
-}
-/*****************************************************************************/
-// parse PIN, attach to element
-gboolean doc_parse_pin(sDocument* doc, sParser* parse){
-printf("doc_parse_pin: 1\n");
-  sPin* pin = pin_parse(parse);
-  if(!pin) return FALSE;
-  element_add(doc->element,pin);  
-  return TRUE;
-}
-/*****************************************************************************/
-// parse LINE
-gboolean doc_parse_line(sDocument* doc, sParser* parse){
-printf("doc_parse_line: 1\n");
-  sLine* line = line_parse(parse);
-  if(!line) return FALSE;
-  element_add(doc->element,line);  
-  return TRUE;
-}
-/*****************************************************************************/
-// parse ELEMENT
-gboolean doc_parse_element(sDocument* doc, sParser* parse){
-printf("doc_parse_element: 1\n");
-  eTokType type;
-  if(!parser_help_open(parse)) return FALSE; 
-  //Create an element
-  sElement* element = element_new();
-  doc->element = element;
-  //TODO: handle element flags.  For now, expect string
-  if(parser_token(parse) != TOK_STRING) return FALSE;
-  //description
-  if(!parser_help_string(parse,&element->description)) return FALSE;
-  //name and value are not used here (PCB sets them)
-  if(parser_token(parse) != TOK_STRING) return FALSE;
-  if(parser_token(parse) != TOK_STRING) return FALSE;
-  //mark x,y
-  if(!parser_help_point(parse,&element->markPos)) return FALSE;
-  //text x,y
-  if(!parser_help_point(parse,&element->textPos)) return FALSE;
-  //text dir (0,1,2,3 ccw)
-  if(!parser_help_number(parse,(int*)&element->textDir)) return FALSE;
-   //text scale
-  if(!parser_help_number(parse,&element->textScale)) return FALSE;
-  //text //
-  if(!parser_help_string(parse,&element->textFlags)) return FALSE;
-  //close element
-  if(!parser_help_close(parse)) return FALSE; 
-  if(!parser_help_open(parse)) return FALSE; 
-
-  // now, the innards
-  gboolean done=FALSE;
-  while(!done){
-    type = parser_token(parse);
-printf("doc_parse_element: token %d\n",type);
-    switch(type){
-      case TOK_PIN: if(!doc_parse_pin(doc,parse)) return FALSE; break;
-      case TOK_PAD: if(!doc_parse_pad(doc,parse)) return FALSE; break;
-      case TOK_LINE: if(!doc_parse_line(doc,parse)) return FALSE; break;
-      case TOK_BRACE_CLOSE:
-      case TOK_PAREN_CLOSE: done=TRUE; break;
-      default:
-        return FALSE;
-    }
-  }
- return TRUE;
-}
 
 gboolean doc_parse(sDocument* doc, sParser* parse){
   eTokType type;
@@ -116,7 +41,8 @@ gboolean doc_parse(sDocument* doc, sParser* parse){
     return FALSE;
   }
   else 
-    return doc_parse_element(doc,parse);
+    return (doc->element = element_parse(parse))?TRUE:FALSE;
+    
 }
 
 sDocument* doc_new(){

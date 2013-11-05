@@ -23,6 +23,10 @@
 #include "view.h"
 #include "element.h"
 #include "vtab.h"
+#include "parser.h"
+#include "pin.h"
+#include "pad.h"
+#include "line.h"
 //vtable as element sees it:
 
 sElement* element_new(){
@@ -73,3 +77,68 @@ void element_draw(sElement*el, cairo_t* cr, sView* view){
  
   
 }
+/*****************************************************************************/
+// parse ELEMENT
+sElement* element_parse(sParser* parse){
+printf("element_parse: 1\n");
+  sElement* element = element_new();
+  TRY
+    eTokType type;
+    if(!parser_help_open(parse)) THROW; 
+    //Create an element
+    //TODO: handle element flags.  For now, expect string
+    if(parser_token(parse) != TOK_STRING) THROW;
+    //description
+    if(!parser_help_string(parse,&element->description)) THROW;
+    //name and value are not used here (PCB sets them)
+    if(parser_token(parse) != TOK_STRING) THROW;
+    if(parser_token(parse) != TOK_STRING) THROW;
+    //mark x,y
+    if(!parser_help_point(parse,&element->markPos)) THROW;
+    //text x,y
+    if(!parser_help_point(parse,&element->textPos)) THROW;
+    //text dir (0,1,2,3 ccw)
+    if(!parser_help_number(parse,(int*)&element->textDir)) THROW;
+    //text scale
+    if(!parser_help_number(parse,&element->textScale)) THROW;
+    //text //
+    if(!parser_help_string(parse,&element->textFlags)) THROW;
+    //close element
+    if(!parser_help_close(parse)) THROW; 
+    if(!parser_help_open(parse)) THROW; 
+
+    // now, the innards
+    gboolean done=FALSE;
+    while(!done){
+      type = parser_token(parse);
+  printf("doc_parse_element: token %d\n",type);
+      switch(type){
+        case TOK_PIN: {
+          sPin* pin = pin_parse(parse);
+          if(!pin) THROW;
+          element_add(element,pin);  
+          } break;
+        case TOK_PAD: {
+          sPad* pad = pad_parse(parse);
+          if(!pad) THROW;
+          element_add(element,pad);  
+          } break;
+        case TOK_LINE: {
+          sLine* line = line_parse(parse);
+          if(!line) THROW;
+          element_add(element,line);  
+          } break;
+          
+        case TOK_BRACE_CLOSE:
+        case TOK_PAREN_CLOSE: done=TRUE; break;
+        default:
+          THROW;
+      }
+    }
+  CATCH
+    element_delete(element);
+    element = 0;
+  ENDTRY   
+  return element;
+}
+

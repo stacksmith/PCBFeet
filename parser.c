@@ -260,3 +260,4 @@ gboolean parser_help_point(sParser*parse, sPoint* point){
     point->y = parse->data.number;
   return TRUE;
 }
+//TODO: parse the flag strings

@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
+typedef struct sParser sParser;
 typedef enum eTextDir{
   TEXT_HOR=0,
   TEXT_UP,
@@ -35,6 +36,7 @@ typedef struct sElement {
 } sElement;
 
 sElement* element_new();
+sElement* element_parse(sParser* parse);
 void element_delete(sElement* el);
 void element_init(sElement*);
 void element_add(sElement*el,gpointer part);
