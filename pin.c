@@ -37,23 +37,30 @@ sPin* pin_new(){
 sPin* pin_parse(sParser* parse){
   //create pin
   sPin* pin = pin_new();
-  if(!parser_help_open(parse)) return 0; //open brace...
-  //pin points q 
-  if(!parser_help_point(parse,&pin->P1)) return 0;
-  //Thickness,clearance, mask
-  if(!parser_help_number(parse,&pin->Thickness)) return 0;
-  if(!parser_help_number(parse,&pin->Clearance)) return 0;
-  if(!parser_help_number(parse,&pin->Mask)) return 0;
-  //Hole
-  if(!parser_help_number(parse,&pin->Hole)) return 0;  
-  //name,number
-  if(!parser_help_string(parse,&pin->Name)) return 0;
-  if(!parser_help_string(parse,&pin->Number)) return 0;
+  TRY
+    if(!parser_help_open(parse)) THROW; //open brace...
+    //pin points q 
+    if(!parser_help_point(parse,&pin->P1)) THROW;
+    //Thickness,clearance, mask
+    if(!parser_help_number(parse,&pin->Thickness)) THROW;
+    if(!parser_help_number(parse,&pin->Clearance)) THROW;
+    if(!parser_help_number(parse,&pin->Mask)) THROW;
+    //Hole
+    if(!parser_help_number(parse,&pin->Hole)) THROW;  
+    //name,number
+    if(!parser_help_string(parse,&pin->Name)) THROW;
+    if(!parser_help_string(parse,&pin->Number)) THROW;
   //Finally, the flags
   //TODO: handle pin flags
-  parser_token(parse);
-  pin->Shape = PIN_ROUND;
-  if(!parser_help_close(parse)) return 0; //closed brace...
+    parser_token(parse);
+    pin->Shape = PIN_ROUND;
+    if(!parser_help_close(parse)) THROW; //closed brace...
+  CATCH
+printf("COUGHT\n");
+    g_free(pin);
+    return 0;
+    
+  ENDTRY
   return pin;
 }
 
