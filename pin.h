@@ -65,6 +65,7 @@ typedef struct sPin {
 } sPin;
 
 sPin* pin_new();
+sPin* pin_parse(sParser* parse);
 sPin* pin_init(sPin* pin,int X,int Y,
   int Thickness,int Clearance, int Mask,
   int Hole,

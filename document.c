@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include "types.h"
+#include "parser.h"
 #include "view.h"
 #include "element.h"
 /*****************************************************************************/
@@ -28,31 +29,14 @@
 #include "pad.h"
 #include "pin.h"
 #include "line.h"
-#include "parser.h"
 #include "document.h"
 
 /*****************************************************************************/
 // parse PAD
 
 gboolean doc_parse_pad(sDocument* doc, sParser* parse){
-  if(!parser_help_open(parse)) return FALSE; //open brace...
-  //create pad
-  sPad* pad = pad_new();
-  //pad points
-  if(!parser_help_point(parse,&pad->P1)) return FALSE;
-  if(!parser_help_point(parse,&pad->P2)) return FALSE;
-  //Thickness,clearance, mask
-  if(!parser_help_number(parse,&pad->Thickness)) return FALSE;
-  if(!parser_help_number(parse,&pad->Clearance)) return FALSE;
-  if(!parser_help_number(parse,&pad->Mask)) return FALSE;
-  //name,number
-  if(!parser_help_string(parse,&pad->Name)) return FALSE;
-  if(!parser_help_string(parse,&pad->Number)) return FALSE;
-  //Finally, the flags
-  //TODO: handle pad flags
-  parser_token(parse);
-  pad->Shape = PAD_ROUND;
-  if(!parser_help_close(parse)) return FALSE; //closed brace...  
+  sPad* pad = pad_parse(parse);
+  if(!pad) return FALSE;
   element_add(doc->element,pad);  
 printf("doc_parse_pad: added  to element %p\n",doc->element);
   return TRUE;
@@ -61,42 +45,18 @@ printf("doc_parse_pad: added  to element %p\n",doc->element);
 // parse PIN, attach to element
 gboolean doc_parse_pin(sDocument* doc, sParser* parse){
 printf("doc_parse_pin: 1\n");
-  if(!parser_help_open(parse)) return FALSE; //open brace...
-  //create pin
-  sPin* pin = pin_new();
-  //pin points q 
-  if(!parser_help_point(parse,&pin->P1)) return FALSE;
-  //Thickness,clearance, mask
-  if(!parser_help_number(parse,&pin->Thickness)) return FALSE;
-  if(!parser_help_number(parse,&pin->Clearance)) return FALSE;
-  if(!parser_help_number(parse,&pin->Mask)) return FALSE;
-  //Hole
-  if(!parser_help_number(parse,&pin->Hole)) return FALSE;  
-  //name,number
-  if(!parser_help_string(parse,&pin->Name)) return FALSE;
-  if(!parser_help_string(parse,&pin->Number)) return FALSE;
-  //Finally, the flags
-  //TODO: handle pin flags
-  parser_token(parse);
-  pin->Shape = PIN_ROUND;
-  if(!parser_help_close(parse)) return FALSE; //closed brace...
+  sPin* pin = pin_parse(parse);
+  if(!pin) return FALSE;
   element_add(doc->element,pin);  
   return TRUE;
 }
 /*****************************************************************************/
 // parse LINE
 gboolean doc_parse_line(sDocument* doc, sParser* parse){
-  if(!parser_help_open(parse)) return FALSE; //open brace...
-  //create pin
-  sLine* line = line_new();
-  //line points
-  if(!parser_help_point(parse,&line->P1)) return FALSE;
-  if(!parser_help_point(parse,&line->P2)) return FALSE;
-  //Thickness
-  if(!parser_help_number(parse,&line->Thickness)) return FALSE;
-  if(!parser_help_close(parse)) return FALSE; //closed brace...  
+printf("doc_parse_line: 1\n");
+  sLine* line = line_parse(parse);
+  if(!line) return FALSE;
   element_add(doc->element,line);  
-printf("doc_parse_line: added line to element %p\n",doc->element);
   return TRUE;
 }
 /*****************************************************************************/

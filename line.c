@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 
 #include "types.h"
+#include "parser.h"
 #include "view.h"
 #include "vtab.h"
 #include "line.h"
@@ -29,6 +30,22 @@ sLine* line_new(){
   line->vtab.draw = (ptrDraw)&line_draw;  //comply with generic vtab func 
   return line;
 }
+/*****************************************************************************/
+// parse PIN from text...
+
+sLine* line_parse(sParser* parse){
+ //create line
+  sLine* line = line_new();
+  if(!parser_help_open(parse)) return 0; //open brace...
+  //line points
+  if(!parser_help_point(parse,&line->P1)) return 0;
+  if(!parser_help_point(parse,&line->P2)) return 0;
+  //Thickness
+  if(!parser_help_number(parse,&line->Thickness)) return 0;
+  if(!parser_help_close(parse)) return 0; //closed brace...
+  return line;  
+}
+
 sLine* line_init(sLine*line,int X1,int Y1,int X2,int Y2,
   int Thickness){
   

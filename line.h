@@ -26,6 +26,7 @@ typedef struct sLine {
 } sLine;
 
 sLine* line_new();
+sLine* line_parse(sParser* parse);
 sLine* line_init(sLine*line,int X1,int Y1,int X2,int Y2,
   int Thickness);
 void line_delete(sLine* pad);

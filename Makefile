@@ -5,13 +5,13 @@ parser.o: parser.c parser.h
 document.o: document.c document.h element.h view.h types.h
 	gcc document.c -c `pkg-config --cflags  gtk+-3.0` -O3
 	
-line.o: line.c line.h view.h types.h
+line.o: line.c line.h view.h types.h parser.h vtab.h
 	gcc line.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-pad.o:  pad.c pad.h view.h types.h
+pad.o:  pad.c pad.h view.h types.h parser.h vtab.h
 	gcc pad.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-pin.o:  pin.c pin.h view.h types.h
+pin.o:  pin.c pin.h view.h types.h parser.h vtab.h
 	gcc pin.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
 element.o: element.c element.h view.h pad.h types.h

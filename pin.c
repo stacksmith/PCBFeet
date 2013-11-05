@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 
 #include "types.h"
+#include "parser.h"
 #include "view.h"
 #include "vtab.h"
 #include "pin.h"
@@ -28,6 +29,31 @@
 sPin* pin_new(){
   sPin* pin = (sPin*)g_malloc0(sizeof(sPin));
   pin->vtab.draw = (ptrDraw)&pin_draw;//comply with generic vtab func 
+  return pin;
+}
+/*****************************************************************************/
+// parse PIN from text...
+
+sPin* pin_parse(sParser* parse){
+  //create pin
+  sPin* pin = pin_new();
+  if(!parser_help_open(parse)) return 0; //open brace...
+  //pin points q 
+  if(!parser_help_point(parse,&pin->P1)) return 0;
+  //Thickness,clearance, mask
+  if(!parser_help_number(parse,&pin->Thickness)) return 0;
+  if(!parser_help_number(parse,&pin->Clearance)) return 0;
+  if(!parser_help_number(parse,&pin->Mask)) return 0;
+  //Hole
+  if(!parser_help_number(parse,&pin->Hole)) return 0;  
+  //name,number
+  if(!parser_help_string(parse,&pin->Name)) return 0;
+  if(!parser_help_string(parse,&pin->Number)) return 0;
+  //Finally, the flags
+  //TODO: handle pin flags
+  parser_token(parse);
+  pin->Shape = PIN_ROUND;
+  if(!parser_help_close(parse)) return 0; //closed brace...
   return pin;
 }
 

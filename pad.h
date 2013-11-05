@@ -35,6 +35,7 @@ typedef struct sPad {
 } sPad;
 
 sPad* pad_new();
+sPad* pad_parse(sParser* parse);
 sPad* pad_init(sPad* pad,int X1,int Y1,int X2,int Y2,
   int Thickness,int Clearance, int Mask,
   GString*Name,GString* Number, ePadShape Shape);
