@@ -28,7 +28,8 @@
 
 sPin* pin_new(){
   sPin* pin = (sPin*)g_malloc0(sizeof(sPin));
-  pin->vtab.draw = (ptrDraw)&pin_draw;//comply with generic vtab func 
+  pin->vtab.draw   = (ptrDraw)  &pin_draw;//comply with generic vtab func 
+  pin->vtab.delete = (ptrDelete)&pin_delete;
   return pin;
 }
 /*****************************************************************************/
@@ -56,7 +57,6 @@ sPin* pin_parse(sParser* parse){
     pin->Shape = PIN_ROUND;
     if(!parser_help_close(parse)) THROW; //closed brace...
   CATCH
-printf("COUGHT\n");
     g_free(pin);
     return 0;
     
@@ -81,6 +81,9 @@ sPin* pin_init(sPin* pin, int X,int Y,
   return pin;
 }
 void pin_delete(sPin* pin){
+printf("deleting pin\n");
+  g_string_free(pin->Name,TRUE);
+  g_string_free(pin->Number,TRUE);
   g_free(pin);
 }
 

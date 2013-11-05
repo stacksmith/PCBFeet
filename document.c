@@ -129,6 +129,7 @@ void doc_init(sDocument* doc){
   parser_init(parse);
   if(!doc_parse(doc,parse)) {
     printf("doc_init: parser error %s\n",parse->ptr);
+    element_delete(doc->element);
     exit(0);
   }
     

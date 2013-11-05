@@ -22,22 +22,23 @@
 #include "types.h"
 #include "view.h"
 #include "element.h"
-
+#include "vtab.h"
 //vtable as element sees it:
-struct sPad;
-typedef void (*ptrDraw)(void*, cairo_t*,sView*);
-typedef struct sVTAB {
-  ptrDraw draw;
-} sVTAB;
-
 
 sElement* element_new(){
   sElement* ret = (sElement*)g_malloc0(sizeof(sElement));
-  
   return ret;
 }
 
 void element_delete(sElement* el){
+printf("element_delete\n");
+  GSList* item = el->data;
+  while(item){
+    sVTAB* vtab = ((sVTAB*)item->data);
+    vtab->delete(vtab);
+    item = item->next;
+  }
+  g_slist_free(el->data);
   g_free(el);
 }
 
@@ -58,16 +59,12 @@ void element_add(sElement*el,gpointer part){
   el->data = g_slist_prepend(el->data,part);
 }
 void element_draw(sElement*el, cairo_t* cr, sView* view){
-  printf("element_draw %p\n",el);
+//printf("element_draw %p\n",el);
   GSList* item = el->data;
   while(item){
-printf("element_draw: itemloop in:ITEM: %p\n",item);
     sVTAB* drawable = ((sVTAB*)item->data);
-printf("element_draw: itemloop 1:drawable: %p\n",drawable);
     drawable->draw(drawable,cr,view);
-printf("element_draw: itemloop 2:\n");
     item = item->next;
-printf("element_draw: itemloop out:ITEM: %p\n",item);
   }
     
 //  sPad* pad = ((sPad*)el->data->data);

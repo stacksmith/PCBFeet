@@ -21,6 +21,8 @@
 #include <stdio.h>
 
 typedef void (*ptrDraw)(void*, cairo_t*,sView*);
+typedef void (*ptrDelete)(void*);
 typedef struct sVTAB {
   ptrDraw draw;
+  ptrDelete delete;
 } sVTAB;

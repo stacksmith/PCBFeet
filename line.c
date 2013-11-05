@@ -28,6 +28,7 @@
 sLine* line_new(){
   sLine* line =  (sLine*)g_malloc0(sizeof(sLine));
   line->vtab.draw = (ptrDraw)&line_draw;  //comply with generic vtab func 
+  line->vtab.delete = (ptrDelete)&line_delete;
   return line;
 }
 /*****************************************************************************/
@@ -36,13 +37,18 @@ sLine* line_new(){
 sLine* line_parse(sParser* parse){
  //create line
   sLine* line = line_new();
-  if(!parser_help_open(parse)) return 0; //open brace...
-  //line points
-  if(!parser_help_point(parse,&line->P1)) return 0;
-  if(!parser_help_point(parse,&line->P2)) return 0;
-  //Thickness
-  if(!parser_help_number(parse,&line->Thickness)) return 0;
-  if(!parser_help_close(parse)) return 0; //closed brace...
+  TRY
+    if(!parser_help_open(parse)) THROW; //open brace...
+    //line points
+    if(!parser_help_point(parse,&line->P1)) THROW;
+    if(!parser_help_point(parse,&line->P2)) THROW;
+    //Thickness
+    if(!parser_help_number(parse,&line->Thickness)) THROW;
+    if(!parser_help_close(parse)) THROW; //closed brace...
+  CATCH
+    g_free(line);
+    line=0;
+  ENDTRY
   return line;  
 }
 
@@ -62,7 +68,9 @@ void line_delete(sLine* line){
   g_free(line);
 }
 
-
+/******************************************************************************
+ * V I R T U A L   F U N C T I O N S
+******************************************************************************/
 void line_draw(sLine*line, cairo_t* cr, sView* view){
   printf("line_draw %p\n",line);
   //manually scale here
@@ -81,5 +89,4 @@ void line_draw(sLine*line, cairo_t* cr, sView* view){
  
   cairo_stroke(cr);    
 }
-
 
