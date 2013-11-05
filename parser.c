@@ -22,6 +22,12 @@ void parser_init(sParser* parse){
   parse->ptr = parse->buffer;
   parse->line = parse->index = 0;
 }
+void parser_set(sParser* parse,char* buffer){
+  parse->buffer=buffer;
+  parse->ptr = parse->buffer;
+  parse->line = parse->index = 0;
+}  
+
 /*
  \n\r\
                 Pad [0.0000 0.0000 20.00mil 0 10mil 20mil 45mil \"1\" \"1\" \"square,edge2\"]\r\

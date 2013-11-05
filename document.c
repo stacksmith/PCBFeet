@@ -25,10 +25,6 @@
 #include "view.h"
 #include "element.h"
 /*****************************************************************************/
-#include "vtab.h"
-#include "pad.h"
-#include "pin.h"
-#include "line.h"
 #include "document.h"
 
 
@@ -52,7 +48,16 @@ sDocument* doc_new(){
   
 void doc_init(sDocument* doc){
   sParser* parse = parser_new();
-  parser_init(parse);
+//  parser_init(parse);
+  FILE* f = fopen("test.fp","r");
+  if(!f) {
+    fprintf(stderr,"file not found\n");
+    exit(0);
+  }
+  char* buf = g_malloc(0x10000);
+  int len = fread(buf,1,0x10000,f);
+  buf[len]=0;
+  parser_set(parse,buf);
   if(!doc_parse(doc,parse)) {
     printf("doc_init: parser error %s\n",parse->ptr);
     element_delete(doc->element);

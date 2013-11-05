@@ -36,6 +36,7 @@ typedef struct sParser{
 
 sParser*  parser_new();
 void      parser_init(sParser* parse);
+void      parser_set(sParser* parse,char* buffer);
 char      parser_get_char(sParser* parse);
 char      parser_peek_char(sParser* parse);
 void      parser_ws(sParser* parse);
