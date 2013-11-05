@@ -10,4 +10,8 @@ This project is a simple CAD for editing footprints.  It is built around GTK 3.0
 STATUS:
 ======
 
-Early prototype.  Zoom with mouse wheel; click sets grid origin. Simple pad is visible.
+Early prototype.  
+Parser: almost done, no flags yet.  Loading from test.fp
+Display: Zoom with mouse wheel; click sets grid origin. 
+
+TODO: rulers, object selection and modification, object entry dialogs, layers, etc.
