@@ -46,7 +46,7 @@ void view_initialize(sView* view,const char* uiname){
   view->pxMouse.x = 0;
   view->pxMouse.y = 0;
   
-  view->mode = MODE_IDLE;
+  view->mode_set_origin = FALSE;
   
   //move this to document
 //  pad = pad_new();
@@ -182,23 +182,24 @@ gboolean canvas_button_release_event_cb(GtkWidget* canvas,GdkEventButton* event,
 //  printf("canvas_button_release_event_cb %d %d\n",(int)event->x,(int)event->y);
 //  printf("canvas_button_release_event_cb %f %f\n",event->x,event->y);
   printf("canvas_button_release_event_cb %d %d\n",(int)event->x,(int)event->y);
-  GdkWindow* w = gtk_widget_get_window(view->frame);
-  GdkCursor* cur = gdk_cursor_new(GDK_LEFT_PTR);
-  gdk_window_set_cursor(w,cur);
-  view->mode = MODE_IDLE;  //mode switch  
-
+  if(view->mode_set_origin){
+    GdkWindow* w = gtk_widget_get_window(view->frame);
+    GdkCursor* cur = gdk_cursor_new(GDK_LEFT_PTR);
+    gdk_window_set_cursor(w,cur);
+    view->mode_set_origin = FALSE;  //mode switch  
 int old = view->grid.origin.x;
 //  getchar();
-  view->grid.origin.x = view->pxMouse.x*view->scale+view->origin.x;
-  view->grid.origin.y = view->pxMouse.y*view->scale+view->origin.y;
+    view->grid.origin.x = view->pxMouse.x*view->scale+view->origin.x;
+    view->grid.origin.y = view->pxMouse.y*view->scale+view->origin.y;
 
 printf("from %d to %d\n",
          old, view->grid.origin.x);
   //force updates of canvas (to redraw grid) and rulers (since origin changed)
-  gtk_widget_queue_draw(canvas); 
-  gtk_widget_queue_draw(view->hruler); //redraw ruler
-  gtk_widget_queue_draw(view->vruler); //redraw ruler
-  status_xy_update(view);
+    gtk_widget_queue_draw(canvas); 
+    gtk_widget_queue_draw(view->hruler); //redraw ruler
+    gtk_widget_queue_draw(view->vruler); //redraw ruler
+    status_xy_update(view);
+  }
   return FALSE;
   
 }
@@ -211,4 +212,13 @@ void hbar_adj_value_changed_cb(GtkAdjustment* adj,gpointer user_data){
   printf("vert adj: %f\n",gtk_adjustment_get_value(adj));
 }
 
+/*****************************************************************************/
+
+void but_origin_clicked_cb(GtkButton* but,sView* view){
+  printf("but_origin_clicked_cb\n");
+  GdkWindow* w = gtk_widget_get_window(view->frame);
+  GdkCursor* cur = gdk_cursor_new(GDK_TOP_LEFT_CORNER);
+  gdk_window_set_cursor(w,cur);
+  view->mode_set_origin=TRUE;  //makes mouse click set origin 
+}
 

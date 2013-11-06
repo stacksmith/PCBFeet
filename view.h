@@ -52,7 +52,8 @@ typedef struct sView {
   int height;
   sPoint pxMouse;
 
-  eMode mode;
+//  eMode mode;
+  gboolean mode_set_origin;
   
   //important widgets
   GtkWidget* frame;

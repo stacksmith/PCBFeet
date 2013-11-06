@@ -36,16 +36,6 @@ extern gboolean vruler_draw_cb(GtkWidget *widget, cairo_t *cr, sView* view){
 extern gboolean origin_draw_cb(GtkWidget *widget, cairo_t *cr, sView* view){
   return FALSE;
 }
-/*****************************************************************************/
-//TODO: move this to a better place
-void but_origin_clicked_cb(GtkButton* but,sView* view){
-  printf("but_origin_clicked_cb\n");
-  GdkWindow* w = gtk_widget_get_window(view->frame);
-  GdkCursor* cur = gdk_cursor_new(GDK_TOP_LEFT_CORNER);
-  gdk_window_set_cursor(w,cur);
-  view->mode = MODE_SET_ORIGIN;  //mode switch  
-  //TODO: is cursor deleted?
-}
 
 /*****************************************************************************/
 // primitive for labelling rulers.  

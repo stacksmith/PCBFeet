@@ -138,7 +138,8 @@ printf("pin_draw illegal\n");
   cairo_stroke(cr);    
 }
 
-
+/*****************************************************************************/
+// a widget containing the controls for modifying the data...
 GtkWidget* pin_create_config(){
   GtkWidget* frame = gtk_frame_new("Pin ");
   gtk_frame_set_shadow_type((GtkFrame*)frame,GTK_SHADOW_IN);
