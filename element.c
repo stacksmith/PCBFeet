@@ -22,12 +22,8 @@
 #include "types.h"
 #include "view.h"
 #include "element.h"
-#include "vtab.h"
 #include "parser.h"
-#include "pin.h"
-#include "pad.h"
-#include "line.h"
-//vtable as element sees it:
+#include "object.h"
 
 sElement* element_new(){
   sElement* ret = (sElement*)g_malloc0(sizeof(sElement));
@@ -38,8 +34,7 @@ void element_delete(sElement* el){
 printf("element_delete\n");
   GSList* item = el->data;
   while(item){
-    sVTAB* vtab = ((sVTAB*)item->data);
-    vtab->delete(vtab);
+    object_delete(item->data);
     item = item->next;
   }
   g_slist_free(el->data);
@@ -55,7 +50,7 @@ void element_init(sElement* el){
   el->textPos.y = 2200;
   el->textDir = TEXT_HOR;
   el->textScale = 100;
-  el->textFlags = g_string_new("");
+  el->textFlags = g_string_new(""); 
   el->data = NULL;
 }
 
@@ -68,8 +63,7 @@ void element_draw(sElement*el, cairo_t* cr, sView* view){
 //printf("element_draw %p\n",el);
   GSList* item = el->data;
   while(item){
-    sVTAB* drawable = ((sVTAB*)item->data);
-    drawable->draw(drawable,cr,view);
+    object_draw(item->data,cr,view);
     item = item->next;
   }
 }
@@ -78,11 +72,9 @@ void element_hit_test(sElement*el, sView* view){
 //printf("element_draw %p\n",el);
   GSList* item = el->data;
   while(item){
-    sVTAB* vtab = ((sVTAB*)item->data);
-    if(vtab->hit_test(vtab,view,&view->pxMouse)) {
+    if(object_hit_test(item->data,view,&view->pxMouse)) {
 printf("HIT ITEM %p\n",item);
       //load the UI..TODO: optimise this
-      
       return;
     }
     item = item->next;
@@ -122,30 +114,11 @@ printf("element_parse: 1\n");
     // now, the innards
     gboolean done=FALSE;
     while(!done){
-      type = parser_token(parse);
-  printf("doc_parse_element: token %d\n",type);
-      switch(type){
-        case TOK_PIN: {
-          sPin* pin = pin_parse(parse);
-          if(!pin) THROW;
-          element_add(element,pin);  
-          } break;
-        case TOK_PAD: {
-          sPad* pad = pad_parse(parse);
-          if(!pad) THROW;
-          element_add(element,pad);  
-          } break;
-        case TOK_LINE: {
-          sLine* line = line_parse(parse);
-          if(!line) THROW;
-          element_add(element,line);  
-          } break;
-          
-        case TOK_BRACE_CLOSE:
-        case TOK_PAREN_CLOSE: done=TRUE; break;
-        default:
-          THROW;
-      }
+      sObject* obj = object_parse(parse);
+      if(obj != NULL)
+        element_add(element,obj);
+      else 
+        done=TRUE;
     }
   CATCH
     element_delete(element);
