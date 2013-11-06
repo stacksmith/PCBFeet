@@ -30,8 +30,9 @@
 sView* view_new(){
   return (sView*)g_malloc0(sizeof(sView));
 }
-//TODO: get rid of this
-extern GtkWidget* pin_create_config();
+
+#include "vtab.h"
+#include "pin.h"
 
 void view_initialize(sView* view,const char* uiname){
   
@@ -62,15 +63,16 @@ void view_initialize(sView* view,const char* uiname){
   view->status_xy = (GtkLabel*)gtk_builder_get_object (builder, "status_xy");
   view->but_origin = (GtkWidget*)gtk_builder_get_object (builder, "but_origin");
   view->objects  =   (GtkWidget*)gtk_builder_get_object (builder, "objects");
-printf("=================%p\n",view->objects);
- 
-  GtkBuilder *builder1 = gtk_builder_new ();
-  gtk_builder_add_from_file (builder1, "test.ui", NULL);
-GtkWidget* framex =(GtkWidget*)gtk_builder_get_object (builder1, "frame1"); 
+ //build the config ui's for all the types...
+  view->ui_pin = ui_pin_new();
+printf("=================%p %p\n",view->ui_pin->frame, view->objects);
+// But to edit with glade, we put it into a window, so reparent
+  gtk_widget_reparent((GtkWidget*)view->ui_pin->frame,(GtkWidget*)view->objects);
+//  GtkBuilder *builder1 = gtk_builder_new ();
+//  gtk_builder_add_from_file (builder1, "test.ui", NULL);
+//GtkWidget* framex =(GtkWidget*)gtk_builder_get_object (builder1, "frame1"); 
 // if adding a windowless hierarchy, use this
 //  gtk_container_add((GtkContainer*)view->objects,framex);
-// But to edit with glade, we put it into a window, so reparent
-gtk_widget_reparent(framex,(GtkContainer*)view->objects);
 
 //  gtk_container_add((GtkContainer*)view->objects,pin_create_config());
 //  gtk_drag_source_set(view->but_origin,GDK_BUTTON1_MASK,NULL,0,GDK_ACTION_PRIVATE);

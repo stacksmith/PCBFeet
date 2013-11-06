@@ -154,14 +154,24 @@ printf("pin_draw illegal\n");
 
 /*****************************************************************************/
 // a widget containing the controls for modifying the data...
-GtkWidget* pin_create_config(){
-  GtkWidget* frame = gtk_frame_new("Pin ");
-  gtk_frame_set_shadow_type((GtkFrame*)frame,GTK_SHADOW_IN);
-  gtk_frame_set_label_align ((GtkFrame*)frame,0,0.25);
-  GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL,0); //box to contain object info
-  gtk_container_add((GtkContainer*)frame,vbox); //add vbox to frame
-  gtk_container_add((GtkContainer*)vbox,gtk_label_new("Name:"));
-  
-  return frame;
+// We create a single one for each type, and hide all but the selected object's
+// type.  Then we quickly update the data
+sUIPin* ui_pin_new(){
+  //allocate the ui structure
+  sUIPin* ui = (sUIPin*)g_malloc(sizeof(sUIPin));
+  //create a builder, load and get data
+  //TODO: this should be done from ram, for speed
+  GtkBuilder *builder = gtk_builder_new();
+  gtk_builder_add_from_file (builder, "ui_pin.ui", NULL);
+  ui->frame =     (GtkFrame*)gtk_builder_get_object (builder, "frame1"); 
+  ui->name =      (GtkEntry*)gtk_builder_get_object (builder, "pin_name"); 
+  ui->number =    (GtkEntry*)gtk_builder_get_object (builder, "pin_number"); 
+  ui->p1_x =      (GtkEntry*)gtk_builder_get_object (builder, "pin_p1_x"); 
+  ui->p1_y =      (GtkEntry*)gtk_builder_get_object (builder, "pin_p1_y"); 
+  ui->thickness = (GtkEntry*)gtk_builder_get_object (builder, "pin_thickness"); 
+  ui->clearance = (GtkEntry*)gtk_builder_get_object (builder, "pin_clearance"); 
+  ui->mask =      (GtkEntry*)gtk_builder_get_object (builder, "pin_mask"); 
+  ui->hole =      (GtkEntry*)gtk_builder_get_object (builder, "pin_hole"); 
+  ui->shape = (GtkComboBoxText*)gtk_builder_get_object (builder, "pin_shape"); 
+  return ui;
 }
-

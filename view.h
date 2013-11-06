@@ -21,6 +21,7 @@
  * scale - how many centimils of the document fit into a pixel.
  * 
 */
+typedef struct sUIPin sUIPin;
 
 typedef enum eMode {
   MODE_IDLE,
@@ -63,6 +64,8 @@ typedef struct sView {
   GtkLabel*  status_xy;  //display coordinates
   GtkWidget* but_origin;
   GtkWidget* objects;    //vbox with obj descriptions
+  //singleton UI objects for pin, pad and line.
+  sUIPin* ui_pin;
   
 } sView;
 

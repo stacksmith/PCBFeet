@@ -75,3 +75,18 @@ void pin_draw(sPin*p, cairo_t* cr, sView* view);
 GtkWidget* pin_create_config();
 
 
+ //and the UI config panel...
+typedef struct sUIPin{
+  GtkFrame* frame;
+  GtkEntry* name; 
+  GtkEntry* number; 
+  GtkEntry* p1_x; 
+  GtkEntry* p1_y; 
+  GtkEntry* thickness; 
+  GtkEntry* clearance; 
+  GtkEntry* mask; 
+  GtkEntry* hole; 
+  GtkComboBoxText* shape;
+} sUIPin;
+
+sUIPin* ui_pin_new();

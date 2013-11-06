@@ -79,8 +79,12 @@ void element_hit_test(sElement*el, sView* view){
   GSList* item = el->data;
   while(item){
     sVTAB* vtab = ((sVTAB*)item->data);
-    if(vtab->hit_test(vtab,view,&view->pxMouse))
-      printf("HIT ITEM %p\n",item);
+    if(vtab->hit_test(vtab,view,&view->pxMouse)) {
+printf("HIT ITEM %p\n",item);
+      //load the UI..TODO: optimise this
+      
+      return;
+    }
     item = item->next;
   }
 }
