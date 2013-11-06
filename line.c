@@ -24,11 +24,13 @@
 #include "view.h"
 #include "vtab.h"
 #include "line.h"
+gboolean line_hit_test(sLine*line, sView* view,sPoint* screen);
 
 sLine* line_new(){
   sLine* line =  (sLine*)g_malloc0(sizeof(sLine));
   line->vtab.draw = (ptrDraw)&line_draw;  //comply with generic vtab func 
   line->vtab.delete = (ptrDelete)&line_delete;
+  line->vtab.hit_test = (ptrHitTest)&line_hit_test;
   return line;
 }
 /*****************************************************************************/
@@ -88,5 +90,11 @@ void line_draw(sLine*line, cairo_t* cr, sView* view){
     (line->P2.y-view->origin.y)/view->scale);
  
   cairo_stroke(cr);    
+}
+
+gboolean line_hit_test(sLine*line, sView* view,sPoint* screen){
+//TODO: implement
+  return FALSE;
+  
 }
 

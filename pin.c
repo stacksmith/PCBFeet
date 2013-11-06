@@ -25,11 +25,13 @@
 #include "vtab.h"
 #include "pin.h"
 #include <math.h>
+gboolean pin_hit_test(sPin*pin, sView* view,sPoint* screen);
 
 sPin* pin_new(){
   sPin* pin = (sPin*)g_malloc0(sizeof(sPin));
-  pin->vtab.draw   = (ptrDraw)  &pin_draw;//comply with generic vtab func 
-  pin->vtab.delete = (ptrDelete)&pin_delete;
+  pin->vtab.draw     = (ptrDraw)  &pin_draw;//comply with generic vtab func 
+  pin->vtab.delete   = (ptrDelete)&pin_delete;
+  pin->vtab.hit_test = (ptrHitTest)&pin_hit_test;
   return pin;
 }
 /*****************************************************************************/
@@ -86,7 +88,19 @@ printf("deleting pin\n");
   g_string_free(pin->Number,TRUE);
   g_free(pin);
 }
-
+//Are we touching a pin with view's screen coordinates
+gboolean pin_hit_test(sPin*pin, sView* view,sPoint* screen){
+  //convert to world coordinates
+  sPoint at;
+  at.x = screen->x * view->scale + view->origin.x;
+  at.y = screen->y * view->scale + view->origin.y;
+  //For now, just use rect outline
+  return (
+    (at.x >  (pin->P1.x - pin->Thickness/2)) &&
+    (at.x <= (pin->P1.x + pin->Thickness/2)) &&
+    (at.y >  (pin->P1.y - pin->Thickness/2)) &&
+    (at.y <= (pin->P1.y + pin->Thickness/2)) );
+}
 
 void pin_draw(sPin*pin, cairo_t* cr, sView* view){
 printf("pin_draw in:%p\n",pin);

@@ -179,8 +179,6 @@ extern gboolean canvas_scroll_event_cb(GtkWidget* canvas,GdkEventScroll* event,s
 }
 /*****************************************************************************/
 gboolean canvas_button_release_event_cb(GtkWidget* canvas,GdkEventButton* event,sView* view){
-//  printf("canvas_button_release_event_cb %d %d\n",(int)event->x,(int)event->y);
-//  printf("canvas_button_release_event_cb %f %f\n",event->x,event->y);
   printf("canvas_button_release_event_cb %d %d\n",(int)event->x,(int)event->y);
   if(view->mode_set_origin){
     GdkWindow* w = gtk_widget_get_window(view->frame);
@@ -188,17 +186,19 @@ gboolean canvas_button_release_event_cb(GtkWidget* canvas,GdkEventButton* event,
     gdk_window_set_cursor(w,cur);
     view->mode_set_origin = FALSE;  //mode switch  
 int old = view->grid.origin.x;
-//  getchar();
     view->grid.origin.x = view->pxMouse.x*view->scale+view->origin.x;
     view->grid.origin.y = view->pxMouse.y*view->scale+view->origin.y;
 
-printf("from %d to %d\n",
-         old, view->grid.origin.x);
+printf("from %d to %d\n", old, view->grid.origin.x);
   //force updates of canvas (to redraw grid) and rulers (since origin changed)
     gtk_widget_queue_draw(canvas); 
     gtk_widget_queue_draw(view->hruler); //redraw ruler
     gtk_widget_queue_draw(view->vruler); //redraw ruler
     status_xy_update(view);
+  } else {
+    // Regular click-release.  Locate object under mouse
+    printf("FUCK\n");
+    element_hit_test(view->document->element,view);
   }
   return FALSE;
   

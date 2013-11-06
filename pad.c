@@ -25,10 +25,13 @@
 #include "vtab.h"
 #include "pad.h"
 
+gboolean pad_hit_test(sPad*pad, sView* view,sPoint* screen);
+
 sPad* pad_new(){
   sPad* pad = (sPad*)g_malloc0(sizeof(sPad));
   pad->vtab.draw   = (ptrDraw)  &pad_draw;  //comply with generic vtab func 
   pad->vtab.delete = (ptrDelete)&pad_delete;  //comply with generic vtab func 
+  pad->vtab.hit_test = (ptrHitTest)&pad_hit_test;
   return pad;
 }
 
@@ -111,5 +114,10 @@ void pad_draw(sPad*pad, cairo_t* cr, sView* view){
   cairo_stroke(cr);    
 }
 
+gboolean pad_hit_test(sPad*pad, sView* view,sPoint* screen){
+//TODO: implement
+  return FALSE;
+  
+}
 
 

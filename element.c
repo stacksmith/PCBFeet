@@ -62,6 +62,8 @@ void element_init(sElement* el){
 void element_add(sElement*el,gpointer part){
   el->data = g_slist_prepend(el->data,part);
 }
+
+
 void element_draw(sElement*el, cairo_t* cr, sView* view){
 //printf("element_draw %p\n",el);
   GSList* item = el->data;
@@ -70,13 +72,19 @@ void element_draw(sElement*el, cairo_t* cr, sView* view){
     drawable->draw(drawable,cr,view);
     item = item->next;
   }
-    
-//  sPad* pad = ((sPad*)el->data->data);
-//  pad->vtab.draw(pad,cr,view);
-  
- 
-  
 }
+
+void element_hit_test(sElement*el, sView* view){
+//printf("element_draw %p\n",el);
+  GSList* item = el->data;
+  while(item){
+    sVTAB* vtab = ((sVTAB*)item->data);
+    if(vtab->hit_test(vtab,view,&view->pxMouse))
+      printf("HIT ITEM %p\n",item);
+    item = item->next;
+  }
+}
+
 /*****************************************************************************/
 // parse ELEMENT
 sElement* element_parse(sParser* parse){

@@ -22,7 +22,9 @@
 
 typedef void (*ptrDraw)(void*, cairo_t*,sView*);
 typedef void (*ptrDelete)(void*);
+typedef gboolean (*ptrHitTest)(void*self,sView* view,sPoint* screen);
 typedef struct sVTAB {
   ptrDraw draw;
   ptrDelete delete;
+  ptrHitTest hit_test;
 } sVTAB;
