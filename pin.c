@@ -160,7 +160,8 @@ GtkWidget* pin_create_config(){
   gtk_frame_set_label_align ((GtkFrame*)frame,0,0.25);
   GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL,0); //box to contain object info
   gtk_container_add((GtkContainer*)frame,vbox); //add vbox to frame
-  gtk_container_add((GtkContainer*)vbox,gtk_label_new("whatever:"));
+  gtk_container_add((GtkContainer*)vbox,gtk_label_new("Name:"));
+  
   return frame;
 }
 

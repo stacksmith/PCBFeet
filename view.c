@@ -63,7 +63,16 @@ void view_initialize(sView* view,const char* uiname){
   view->but_origin = (GtkWidget*)gtk_builder_get_object (builder, "but_origin");
   view->objects  =   (GtkWidget*)gtk_builder_get_object (builder, "objects");
 printf("=================%p\n",view->objects);
-  gtk_container_add((GtkContainer*)view->objects,pin_create_config());
+ 
+  GtkBuilder *builder1 = gtk_builder_new ();
+  gtk_builder_add_from_file (builder1, "test.ui", NULL);
+GtkWidget* framex =(GtkWidget*)gtk_builder_get_object (builder1, "frame1"); 
+// if adding a windowless hierarchy, use this
+//  gtk_container_add((GtkContainer*)view->objects,framex);
+// But to edit with glade, we put it into a window, so reparent
+gtk_widget_reparent(framex,(GtkContainer*)view->objects);
+
+//  gtk_container_add((GtkContainer*)view->objects,pin_create_config());
 //  gtk_drag_source_set(view->but_origin,GDK_BUTTON1_MASK,NULL,0,GDK_ACTION_PRIVATE);
   gtk_builder_connect_signals(builder,view);
   /* Exit when the window is closed */
