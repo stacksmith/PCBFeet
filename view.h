@@ -17,12 +17,18 @@
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 #pragma once
+#include <cairo.h>
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include <malloc.h>
+
+#include "types.h"
+#include "parm.h"
 /* View-related information is contained here...
  * The view is measured in pixels.  The most important variable is
  * scale - how many centimils of the document fit into a pixel.
  * 
 */
-typedef struct sUIPin sUIPin;
 
 typedef enum eMode {
   MODE_IDLE,
@@ -65,9 +71,7 @@ typedef struct sView {
   GtkLabel*  status_xy;  //display coordinates
   GtkWidget* but_origin;
   GtkWidget* objects;    //vbox with obj descriptions
-  //singleton UI objects for pin, pad and line.
-  sUIPin* ui_pin;
-  
+  sParm     parm;  //parameter box
 } sView;
 
 sView* view_new();

@@ -415,12 +415,17 @@
                       <object class="GtkAlignment" id="parm_alignment">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="xscale">0.5</property>
+                        <property name="yscale">0.5</property>
                         <property name="left_padding">12</property>
                         <property name="right_padding">6</property>
                         <child>
                           <object class="GtkGrid" id="parm_grid">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="valign">start</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
                             <child>
                               <object class="GtkLabel" id="parm_label_name">
                                 <property name="visible">True</property>
@@ -439,6 +444,7 @@
                               <object class="GtkEntry" id="parm_name">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="has_frame">False</property>
                                 <property name="invisible_char">•</property>
                                 <property name="invisible_char_set">True</property>
                               </object>
@@ -467,6 +473,7 @@
                               <object class="GtkEntry" id="parm_number">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="has_frame">False</property>
                                 <property name="invisible_char">•</property>
                                 <property name="invisible_char_set">True</property>
                               </object>
@@ -492,7 +499,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox" id="box3">
+                              <object class="GtkBox" id="parm_box_p1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
@@ -512,9 +519,9 @@
                                   <object class="GtkEntry" id="parm_p1_x">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="has_frame">False</property>
                                     <property name="invisible_char">•</property>
                                     <property name="width_chars">9</property>
-                                    <property name="invisible_char_set">True</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -539,6 +546,7 @@
                                   <object class="GtkEntry" id="parm_p1_y">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="has_frame">False</property>
                                     <property name="invisible_char">•</property>
                                     <property name="width_chars">9</property>
                                     <property name="invisible_char_set">True</property>
@@ -613,9 +621,10 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="parm_thickness">
+                              <object class="GtkEntry" id="parm_thick">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="has_frame">False</property>
                                 <property name="invisible_char">•</property>
                                 <property name="invisible_char_set">True</property>
                               </object>
@@ -627,9 +636,10 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="parm_clearance">
+                              <object class="GtkEntry" id="parm_clear">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="has_frame">False</property>
                                 <property name="invisible_char">•</property>
                                 <property name="invisible_char_set">True</property>
                               </object>
@@ -644,6 +654,7 @@
                               <object class="GtkEntry" id="parm_mask">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="has_frame">False</property>
                                 <property name="invisible_char">•</property>
                                 <property name="invisible_char_set">True</property>
                               </object>
@@ -715,7 +726,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox" id="box4">
+                              <object class="GtkBox" id="parm_box_p2">
+                                <property name="height_request">16</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
@@ -735,6 +747,7 @@
                                   <object class="GtkEntry" id="parm_p2_x">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="has_frame">False</property>
                                     <property name="invisible_char">•</property>
                                     <property name="width_chars">9</property>
                                     <property name="invisible_char_set">True</property>
@@ -762,6 +775,7 @@
                                   <object class="GtkEntry" id="parm_p2_y">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="has_frame">False</property>
                                     <property name="invisible_char">•</property>
                                     <property name="width_chars">9</property>
                                     <property name="invisible_char_set">True</property>
@@ -811,6 +825,7 @@
                               <object class="GtkEntry" id="parm_hole">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="has_frame">False</property>
                                 <property name="invisible_char">•</property>
                                 <property name="invisible_char_set">True</property>
                               </object>
@@ -886,7 +901,7 @@
                       <object class="GtkLabel" id="parm_label_frame">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Pin</property>
+                        <property name="label" translatable="yes">idle</property>
                         <property name="use_markup">True</property>
                       </object>
                     </child>

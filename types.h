@@ -18,7 +18,7 @@
 ******************************************************************************/
 /* some common types
 */
-
+#pragma once
 typedef int coord;
 
 typedef struct sPoint{

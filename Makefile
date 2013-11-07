@@ -20,8 +20,10 @@ element.o: element.c element.h view.h vtab.h parser.h types.h
 grid.o: grid.c view.h types.h
 	gcc grid.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
-view.o: view.c view.h types.h
+view.o: view.c view.h types.h parm.h
 	gcc view.c -c `pkg-config --cflags  gtk+-3.0` -O3
+parm.o: parm.c types.h
+	gcc parm.c -c `pkg-config --cflags  gtk+-3.0` -O3
 
 ruler.o: ruler.c ruler.h view.h types.h
 	gcc ruler.c -c `pkg-config --cflags  gtk+-3.0` -O3
@@ -30,9 +32,10 @@ fcad.o: fcad.c view.h ruler.h types.h
 	gcc fcad.c -c `pkg-config --cflags  gtk+-3.0` -O3
 	
 fcad: fcad.o view.o  ruler.o grid.o element.o document.o \
-      parser.o object.o obj_line.o obj_pad.o obj_pin.o
+      parser.o object.o obj_line.o obj_pad.o obj_pin.o parm.o
 	gcc -g -o fcad fcad.o view.o  ruler.o grid.o element.o \
-	document.o parser.o object.o  obj_line.o obj_pad.o obj_pin.o\
+	document.o parser.o object.o  obj_line.o obj_pad.o obj_pin.o \
+	parm.o \
 	  `pkg-config --libs gtk+-3.0` -export-dynamic -O3
 
 clean:

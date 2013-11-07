@@ -16,12 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
-#include <cairo.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
-#include <malloc.h>
-
-#include "types.h"
 #include "view.h"
 
 //sPad*pad;
@@ -30,6 +24,8 @@
 sView* view_new(){
   return (sView*)g_malloc0(sizeof(sView));
 }
+
+void parm_init(sParm* parm,GtkBuilder*builder);
 
 void view_initialize(sView* view,const char* uiname){
   
@@ -60,6 +56,8 @@ void view_initialize(sView* view,const char* uiname){
   view->status_xy = (GtkLabel*)gtk_builder_get_object (builder, "status_xy");
   view->but_origin = (GtkWidget*)gtk_builder_get_object (builder, "but_origin");
   view->objects  =   (GtkWidget*)gtk_builder_get_object (builder, "objects");
+  
+  parm_init(&view->parm,builder);
  //build the config ui's for all the types...
 //  GtkBuilder *builder1 = gtk_builder_new ();
 //  gtk_builder_add_from_file (builder1, "test.ui", NULL);

@@ -67,6 +67,8 @@ void element_draw(sElement*el, cairo_t* cr, sView* view){
     item = item->next;
   }
 }
+//TODO: bogus
+void parm_pin(sParm* parm,sObject* pin);
 
 void element_hit_test(sElement*el, sView* view){
 //printf("element_draw %p\n",el);
@@ -74,6 +76,7 @@ void element_hit_test(sElement*el, sView* view){
   while(item){
     if(object_hit_test(item->data,view,&view->pxMouse)) {
 printf("HIT ITEM %p\n",item);
+parm_pin(&view->parm,item->data);
       //load the UI..TODO: optimise this
       return;
     }
