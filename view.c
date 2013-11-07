@@ -31,9 +31,6 @@ sView* view_new(){
   return (sView*)g_malloc0(sizeof(sView));
 }
 
-#include "vtab.h"
-#include "pin.h"
-
 void view_initialize(sView* view,const char* uiname){
   
   view->origin.x=-10000;
@@ -64,10 +61,6 @@ void view_initialize(sView* view,const char* uiname){
   view->but_origin = (GtkWidget*)gtk_builder_get_object (builder, "but_origin");
   view->objects  =   (GtkWidget*)gtk_builder_get_object (builder, "objects");
  //build the config ui's for all the types...
-  view->ui_pin = ui_pin_new();
-printf("=================%p %p\n",view->ui_pin->frame, view->objects);
-// But to edit with glade, we put it into a window, so reparent
-  gtk_widget_reparent((GtkWidget*)view->ui_pin->frame,(GtkWidget*)view->objects);
 //  GtkBuilder *builder1 = gtk_builder_new ();
 //  gtk_builder_add_from_file (builder1, "test.ui", NULL);
 //GtkWidget* framex =(GtkWidget*)gtk_builder_get_object (builder1, "frame1"); 

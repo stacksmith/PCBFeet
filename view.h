@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with PCBFeet.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
+#pragma once
 /* View-related information is contained here...
  * The view is measured in pixels.  The most important variable is
  * scale - how many centimils of the document fit into a pixel.
