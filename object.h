@@ -18,6 +18,7 @@
 ******************************************************************************/
 #pragma once
 #include "view.h"
+#include "parser.h"
 /* After much deliberation I decided that the best strategy is to create a single
  * displayable object 'class' containing data usable for all possible cases:
  * pin, pad, line, curve. 

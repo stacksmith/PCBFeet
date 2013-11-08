@@ -71,7 +71,8 @@ typedef struct sView {
   GtkLabel*  status_xy;  //display coordinates
   GtkWidget* but_origin;
   GtkWidget* objects;    //vbox with obj descriptions
-  sParm     parm;  //parameter box
+  // array of parameter widgets
+  GtkWidget* parm_widget[32]; //TODO: check the size!
 } sView;
 
 sView* view_new();

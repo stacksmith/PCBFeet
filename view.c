@@ -26,7 +26,7 @@ sView* view_new(){
   return (sView*)g_malloc0(sizeof(sView));
 }
 
-void parm_init(sParm* parm,GtkBuilder*builder);
+void parm_init(GtkWidget** widget,GtkBuilder*builder);
 
 void view_initialize(sView* view,const char* uiname){
   
@@ -58,7 +58,7 @@ void view_initialize(sView* view,const char* uiname){
   view->but_origin = (GtkWidget*)gtk_builder_get_object (builder, "but_origin");
   view->objects  =   (GtkWidget*)gtk_builder_get_object (builder, "objects");
   
-  parm_init(&view->parm,builder);
+  parm_init(view->parm_widget,builder);
  //build the config ui's for all the types...
 //  GtkBuilder *builder1 = gtk_builder_new ();
 //  gtk_builder_add_from_file (builder1, "test.ui", NULL);
