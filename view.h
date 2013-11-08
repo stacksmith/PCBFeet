@@ -24,6 +24,7 @@
 
 #include "types.h"
 #include "parm.h"
+#include "selection.h"
 /* View-related information is contained here...
  * The view is measured in pixels.  The most important variable is
  * scale - how many centimils of the document fit into a pixel.
