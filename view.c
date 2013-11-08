@@ -18,6 +18,7 @@
 ******************************************************************************/
 #include "view.h"
 
+
 //sPad*pad;
 #include "element.h"
 #include "document.h"

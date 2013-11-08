@@ -47,19 +47,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="status_xy">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">(0,0)</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkMenuBar" id="menubar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -228,8 +215,24 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="status_xy">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">(0,0)</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
                 <property name="position">2</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -415,6 +418,7 @@
                       <object class="GtkAlignment" id="parm_alignment">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="valign">start</property>
                         <property name="xscale">0.5</property>
                         <property name="yscale">0.5</property>
                         <property name="left_padding">12</property>
@@ -430,7 +434,8 @@
                               <object class="GtkLabel" id="parm_label_name">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="halign">end</property>
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Name:</property>
                               </object>
                               <packing>
@@ -460,6 +465,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Num:</property>
                               </object>
                               <packing>
@@ -489,6 +495,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">P1:</property>
                               </object>
                               <packing>
@@ -583,6 +590,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Thick:</property>
                               </object>
                               <packing>
@@ -597,6 +605,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Clear:</property>
                               </object>
                               <packing>
@@ -611,6 +620,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Mask:</property>
                               </object>
                               <packing>
@@ -670,6 +680,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Shape:</property>
                               </object>
                               <packing>
@@ -683,8 +694,12 @@
                               <object class="GtkComboBoxText" id="parm_shape">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="valign">center</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">True</property>
                                 <property name="active">0</property>
                                 <property name="entry_text_column">0</property>
+                                <property name="popup_fixed_width">False</property>
                                 <property name="id_column">1</property>
                                 <items>
                                   <item translatable="yes">Round</item>
@@ -716,6 +731,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">P2:</property>
                               </object>
                               <packing>
@@ -812,6 +828,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Hole:</property>
                               </object>
                               <packing>
@@ -865,6 +882,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
+                                <property name="valign">center</property>
                                 <property name="label" translatable="yes">Layer:</property>
                               </object>
                               <packing>
@@ -913,7 +931,18 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkScale" id="scale1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="fill_level">10000</property>
+                    <property name="round_digits">3</property>
+                    <property name="value_pos">right</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
