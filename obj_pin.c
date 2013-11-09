@@ -25,12 +25,15 @@
 #include "types.h"
 #include "parser.h"
 #include "object.h"
+#include "parm.h"
 #include <math.h>
 
 /*****************************************************************************
   Parse the pin source.  called after initial parse for P1...
 */
 gboolean obj_pin_parse(sObject* obj, sParser* parse){
+  obj->UIMask = UIMASK_PIN;
+//printf("obj_pin_parse: uimask is %X\n",UIMASK_PIN  );
   //Thickness,clearance, mask
   if(!parser_help_number(parse,&obj->Thickness)) return FALSE;
   if(!parser_help_number(parse,&obj->Clearance)) return FALSE;
@@ -51,7 +54,7 @@ gboolean obj_pin_parse(sObject* obj, sParser* parse){
   Draw the pin 
 */
 void obj_pin_draw(sObject* obj, cairo_t* cr, sView* view){
-printf("obj_draw in:%p\n",obj);
+//printf("obj_draw in:%p\n",obj);
   int rad_outer = obj->Thickness/2;
   int rad_inner = obj->Hole/2;
 //  int width = (obj->Thickness - obj->Hole)/2; //pad diameter-hole diameter/2
@@ -63,7 +66,7 @@ printf("obj_draw in:%p\n",obj);
   //Draw the outer shape
   switch(obj->Shape ){
     case SHAPE_ROUND:
-printf("pin_draw round\n");
+//printf("pin_draw round\n");
       cairo_new_sub_path(cr);
       cairo_arc(cr,
         (obj->P1.x-view->origin.x)/view->scale +.5,
@@ -80,10 +83,10 @@ printf("pin_draw round\n");
       cairo_fill(cr);
       break;
     case SHAPE_OCTAGON:
-printf("pin_draw octa\n");
+//printf("pin_draw octa\n");
       break;
     default:
-printf("pin_draw illegal\n");
+//printf("pin_draw illegal\n");
       break;
   }
   //Draw the hole

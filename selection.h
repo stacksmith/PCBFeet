@@ -19,10 +19,14 @@
 #pragma once
 #include <cairo.h>
 #include <gtk/gtk.h>
+
 /******************************************************************************
  Keep track of current selection, and act upon any changes
 */
+typedef struct sObject sObject;
 
 typedef struct sSelection {
-  
+    GSList*      data;            //a linked list of data parts
 } sSelection;
+
+void selection_add(sSelection* sel,sObject* object);

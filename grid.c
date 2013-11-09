@@ -40,16 +40,16 @@ void grid_draw(GtkWidget *canvas, cairo_t *cr, sView* view){
   int px_unit = grid->unit / view->scale; 
   //Draw the grid in view coordinates. 
   //Convert screen (0,0) to nearest grid coordinate...
- printf("grid_draw1 grid_origin (%d,%d), origin(%d,%d)\n",
-   grid->origin.x, grid->origin.y,
-   view->origin.x, view->origin.y);
+//printf("grid_draw1 grid_origin (%d,%d), origin(%d,%d)\n",
+//   grid->origin.x, grid->origin.y,
+//   view->origin.x, view->origin.y);
   
   int w=0;
   int h=0;
   sPoint start = {
     ((grid->origin.x - view->origin.x)/view->scale),// /px_unit)*px_unit,
     ((grid->origin.y - view->origin.y)/view->scale)};// /px_unit)*px_unit };
- printf("grid_draw1 start (%d,%d),%d\n",start.x,start.y,px_unit);
+//printf("grid_draw1 start (%d,%d),%d\n",start.x,start.y,px_unit);
   //draw the four quadrants
   for(y=start.y; y<view->height; y+=px_unit){   //lower
     for(x=start.x; x<view->width; x+=px_unit){  //right
@@ -87,8 +87,8 @@ void grid_draw(GtkWidget *canvas, cairo_t *cr, sView* view){
   grid->nearest.point.y = ((view->pxMouse.y-grid->pxOrigin.y + px_unit/2 ) / px_unit)* px_unit+ grid->pxOrigin.y;
   grid->nearest.distance = 
     sqrt(pow((view->pxMouse.x-grid->nearest.point.x),2)+(pow((view->pxMouse.y-grid->nearest.point.y),2)));
-printf("grid_draw2 nearest(%d %d) distance %f\n",grid->nearest.point.x,grid->nearest.point.y,
-  grid->nearest.distance);
+//printf("grid_draw2 nearest(%d %d) distance %f\n",grid->nearest.point.x,grid->nearest.point.y,
+//  grid->nearest.distance);
 
   cairo_stroke(cr);    
 //  cairo_set_antialias(cr,CAIRO_ANTIALIAS_NONE);
@@ -103,7 +103,7 @@ printf("grid_draw2 nearest(%d %d) distance %f\n",grid->nearest.point.x,grid->nea
 //  cairo_move_to(cr,0,y=view->pxMouse.y);
 //  cairo_line_to(cr,view->width,view->pxMouse.y);
   cairo_stroke(cr);    
- printf("grid_draw2 %d %d\n",view->pxMouse.x,view->pxMouse.y);
+// printf("grid_draw2 %d %d\n",view->pxMouse.x,view->pxMouse.y);
 }
 /*****************************************************************************/
 // Find the nearest gridpoint...

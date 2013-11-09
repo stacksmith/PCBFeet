@@ -25,10 +25,13 @@
 #include "types.h"
 #include "parser.h"
 #include "object.h"
+#include "parm.h"
 /*****************************************************************************
   Parse the line source.  called after initial parse for P1...
 */
 gboolean obj_line_parse(sObject* obj, sParser* parse){
+  obj->UIMask = UIMASK_LINE;
+
   //line points
   if(!parser_help_point(parse,&obj->P2)) return FALSE;
   //Thickness
@@ -40,12 +43,11 @@ gboolean obj_line_parse(sObject* obj, sParser* parse){
   Draw the line
 */
 void obj_line_draw(sObject* line, cairo_t* cr, sView* view){
-  printf("line_draw %p\n",line);
+//  printf("line_draw %p\n",line);
   //manually scale here
   cairo_set_line_cap(cr,CAIRO_LINE_CAP_ROUND);
   cairo_set_source_rgb(cr, .3,.3,.3);
   cairo_set_line_width(cr, line->Thickness/view->scale);
-  printf("line_draw 1\n");
   
   // convert native centimils to pixels
   cairo_move_to(cr,

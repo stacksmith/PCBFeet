@@ -31,34 +31,19 @@
 
 void parm_init(GtkWidget* widget[],GtkBuilder*builder){
   int i;
-  for(i=0;i<pw_last;i++){
+  for(i=0;i<pw_last;i++)
     widget[i]=(GtkWidget*)gtk_builder_get_object (builder, parm_widget_name[i]);
-printf(".");
-  }
 }
-
-void parm_pin(sView* view,sObject* pin){
-/*  gtk_label_set_text(parm->label_frame,"Pin:");
-  //set and show name
-  gtk_entry_set_text(parm->name,pin->Name->str);
-  //set and show num
-  gtk_entry_set_text(parm->number,pin->Number->str);
-  //set and show p`
-  
-  gtk_entry_set_text(parm->p1_x,"1234");
-  gtk_entry_set_text(parm->p1_y,"5678");
-  //hide p2
-  gtk_entry_set_text(parm->p1_x,"");
-  gtk_entry_set_text(parm->p1_y,"");
-  gtk_widget_set_sensitive((GtkWidget*)parm->box_p2,FALSE);
-  gtk_widget_set_sensitive((GtkWidget*)parm->label_p2,FALSE);
-  
-//  gtk_widget_hide((GtkWidget*)parm->p2_x);
-//  gtk_widget_hide((GtkWidget*)parm->p2_y);
-  //set and show thickness, clear, mask
-  gtk_entry_set_text(parm->thick,"1111");
-  gtk_entry_set_text(parm->clear,"2222");
-  gtk_entry_set_text(parm->mask,"3333");
-  
- */ 
+/******************************************************************************
+  Adjust the displayed parameters to match mask
+*/
+void parm_realize(sView* view,unsigned int uimask){
+printf("parm_realize %X\n",uimask);
+  int i;
+  unsigned int bit = 1;
+  for(i=0;i<pw_last;i++){
+//printf("parm_realize %d %X %X\n",i,bit,uimask&bit);
+    gtk_widget_set_sensitive(view->parm_widget[i],uimask & bit); //on or off...
+    bit <<= 1; //next bit
+  }
 }

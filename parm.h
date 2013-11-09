@@ -22,25 +22,24 @@
   //parameter editor
 
 typedef enum eParmWidget {
-  label_frame,   
-  label_name,  name,
-  label_number,  number,
+  e_label_name,  e_name,
+  e_label_number,  e_number,
   //
-  box_p1,  label_p1,  p1_x,  p1_y,
-  box_p2,  label_p2,  p2_x,  p2_y,
-  label_hole,  hole,
+  e_box_p1,  e_label_p1,  e_p1_x,  e_p1_y,
+  e_box_p2,  e_label_p2,  e_p2_x,  e_p2_y,
+  e_label_hole,  e_hole,
   //
-  label_thick,  thick,
-  label_clear,  clear,
-  label_mask,  mask,
+  e_label_thick,  e_thick,
+  e_label_clear,  e_clear,
+  e_label_mask,  e_mask,
   //
-  label_shape,  shape,
-  label_layer,  layer,
+  e_label_shape,  e_shape,
+  e_label_layer,  e_layer,
   pw_last
 } eParmWidget;
 
 static char* parm_widget_name[]={
-  "parm_label_frame","parm_label_name", "parm_name", "parm_label_number", "parm_number",
+  "parm_label_name", "parm_name", "parm_label_number", "parm_number",
 //
   "parm_box_p1", "parm_label_p1", "parm_p1_x", "parm_p1_y",
   "parm_box_p2", "parm_label_p2", "parm_p2_x", "parm_p2_y",
@@ -53,5 +52,48 @@ static char* parm_widget_name[]={
   "parm_label_shape","parm_shape",
   "parm_label_layer", "parm_layer"
 };
+/* UIMASKS are bitmaps indicating which widgets are required for specific types of objs
+ See multiple selection mechanism for how ANDing the masks leaves a bitmap of relevant
+ widgets to activate for the selection
+ 
+ */
+#define UIMASK_PIN  (1<<e_label_name) + (1<<e_name) + (1<<e_label_number ) + (1<<e_number  ) \
+ + (1<<e_box_p1) + (1<<e_label_p1) + (1<<e_p1_x) + (1<<e_p1_y ) \
+ + (0<<e_box_p2) + (0<<e_label_p2) + (0<<e_p2_x) + (0<<e_p2_y ) \
+ + (1<<e_label_hole) + (1<< e_hole ) \
+ + (1<<e_label_thick) + (1<< e_thick ) \
+ + (1<<e_label_clear) + (1<<e_clear ) \
+ + (1<<e_label_mask ) + (1<<e_mask ) \
+ + (1<<e_label_shape) + (1<<e_shape ) \
+ + (1<<e_label_layer) + (1<<e_layer)
 
+#define UIMASK_PAD  (1<<e_label_name) + (1<<e_name) + (1<<e_label_number ) + (1<<e_number  ) \
+ + (1<<e_box_p1) + (1<<e_label_p1) + (1<<e_p1_x) + (1<<e_p1_y ) \
+ + (1<<e_box_p2) + (1<<e_label_p2) + (0<<e_p2_x) + (0<<e_p2_y ) \
+ + (0<<e_label_hole) + (0<< e_hole ) \
+ + (1<<e_label_thick) + (1<< e_thick ) \
+ + (1<<e_label_clear) + (1<<e_clear ) \
+ + (1<<e_label_mask ) + (1<<e_mask ) \
+ + (1<<e_label_shape) + (1<<e_shape ) \
+ + (1<<e_label_layer) + (1<<e_layer)
 
+#define UIMASK_LINE  (0<<e_label_name) + (0<<e_name) + (0<<e_label_number ) + (0<<e_number  ) \
+ + (1<<e_box_p1) + (1<<e_label_p1) + (1<<e_p1_x) + (1<<e_p1_y ) \
+ + (1<<e_box_p2) + (1<<e_label_p2) + (0<<e_p2_x) + (0<<e_p2_y ) \
+ + (0<<e_label_hole) + (0<< e_hole ) \
+ + (1<<e_label_thick) + (1<< e_thick ) \
+ + (0<<e_label_clear) + (0<<e_clear ) \
+ + (0<<e_label_mask ) + (0<<e_mask ) \
+ + (0<<e_label_shape) + (0<<e_shape ) \
+ + (1<<e_label_layer) + (1<<e_layer)
+
+//This one is the starting point for multiple selection
+#define UIMASK_MULTIPLE  (0<<e_label_name) + (0<<e_name) + (0<<e_label_number ) + (0<<e_number  ) \
+ + (1<<e_box_p1) + (1<<e_label_p1) + (1<<e_p1_x) + (1<<e_p1_y ) \
+ + (1<<e_box_p2) + (1<<e_label_p2) + (0<<e_p2_x) + (0<<e_p2_y ) \
+ + (1<<e_label_hole) + (1<< e_hole ) \
+ + (1<<e_label_thick) + (1<< e_thick ) \
+ + (1<<e_label_clear) + (1<<e_clear ) \
+ + (1<<e_label_mask ) + (1<<e_mask ) \
+ + (1<<e_label_shape) + (1<<e_shape ) \
+ + (1<<e_label_layer) + (1<<e_layer)

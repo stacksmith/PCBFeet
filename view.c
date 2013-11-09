@@ -22,6 +22,7 @@
 //sPad*pad;
 #include "element.h"
 #include "document.h"
+#include "object.h"
 sView* view_new(){
   return (sView*)g_malloc0(sizeof(sView));
 }
@@ -59,6 +60,7 @@ void view_initialize(sView* view,const char* uiname){
   view->objects  =   (GtkWidget*)gtk_builder_get_object (builder, "objects");
   
   parm_init(view->parm_widget,builder);
+  selection_init(&view->selection);
  //build the config ui's for all the types...
 //  GtkBuilder *builder1 = gtk_builder_new ();
 //  gtk_builder_add_from_file (builder1, "test.ui", NULL);
@@ -97,9 +99,7 @@ extern gboolean canvas_draw_cb(GtkWidget *widget, cairo_t *cr,
   cairo_stroke(cr);    
 */
 //  pad_draw(pad,cr,view);
-printf("cadwin_draw %p\n",view);
-printf("cadwin_draw %p\n",view->document);
-printf("cadwin_draw %p\n",view->document->element);
+//printf("cadwin_draw %p\n",view);
   element_draw(view->document->element,cr,view);
   grid_draw(widget,cr,view);
   //draw the targeting lines
@@ -130,8 +130,7 @@ extern gboolean canvas_motion_notify_event_cb (GtkWidget *canvas,
   // store mouse coordinates as view coordinates
   view->pxMouse.x = event->x;
   view->pxMouse.y = event->y;
-  printf("canvas_motion_notify_event_cb (%d,%d)\n",
-         view->pxMouse.x,view->pxMouse.y)  ;
+//  printf("canvas_motion_notify_event_cb (%d,%d)\n",        view->pxMouse.x,view->pxMouse.y)  ;
   
   //TODO: remove this
 //  view->mouse.x = ((int)(event->x))*view->scale+ view->origin.x ;
@@ -200,8 +199,12 @@ printf("from %d to %d\n", old, view->grid.origin.x);
     status_xy_update(view);
   } else {
     // Regular click-release.  Locate object under mouse
-    printf("FUCK\n");
-    element_hit_test(view->document->element,view);
+    sObject* hit = element_hit_test(view->document->element,view);
+    if(hit) {
+      selection_add(&view->selection,hit);
+      parm_realize(view,selection_uimask(&view->selection));
+    }
+
   }
   return FALSE;
   

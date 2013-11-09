@@ -67,20 +67,21 @@ void element_draw(sElement*el, cairo_t* cr, sView* view){
     item = item->next;
   }
 }
-//TODO: bogus
-
-void element_hit_test(sElement*el, sView* view){
+/*****************************************************************************/
+// TODO: 
+sObject* element_hit_test(sElement*el, sView* view){
 //printf("element_draw %p\n",el);
   GSList* item = el->data;
   while(item){
     if(object_hit_test(item->data,view,&view->pxMouse)) {
 printf("HIT ITEM %p\n",item);
-//parm_pin(&view->parm,item->data);
-      //load the UI..TODO: optimise this
-      return;
+      return item->data; 
+      //add to selection
+//      selection_add(&view->selection,view,item->data);
     }
     item = item->next;
   }
+  return NULL;
 }
 
 /*****************************************************************************/

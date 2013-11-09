@@ -41,5 +41,6 @@ void element_delete(sElement* el);
 void element_init(sElement*);
 void element_add(sElement*el,gpointer part);
 void element_draw(sElement*p, cairo_t* cr, sView* view);
+sObject* element_hit_test(sElement*el, sView* view);
 
 

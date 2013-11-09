@@ -77,6 +77,7 @@ typedef struct sObject {
   int Clearance;   //separation of pad from other conductors (50%)
   int Mask;
   int Hole;
+  unsigned int UIMask;  //which gui parms are enabled?
 } sObject;
 
 sObject* object_new();

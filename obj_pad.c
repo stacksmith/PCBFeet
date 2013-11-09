@@ -25,10 +25,12 @@
 #include "types.h"
 #include "parser.h"
 #include "object.h"
+#include "parm.h"
 /*****************************************************************************
   Parse the pad source.  called after initial parse for P1...
 */
 gboolean obj_pad_parse(sObject* obj, sParser* parse){
+  obj->UIMask = UIMASK_PAD;
   //pad points
   if(!parser_help_point(parse,&obj->P2)) return FALSE;
   //Thickness,clearance, mask

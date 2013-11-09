@@ -54,7 +54,7 @@ extern gboolean hruler_draw_cb(GtkWidget *widget, cairo_t *cr, sView* view){
    cairo_select_font_face(cr, "Sans",
       CAIRO_FONT_SLANT_NORMAL,
       CAIRO_FONT_WEIGHT_NORMAL);    
-printf("hruler_draw_cb %d\n",unit);
+//printf("hruler_draw_cb %d\n",unit);
 cairo_set_font_size(cr, 8);
     cairo_move_to(cr,0,10); //long stroke
   cairo_identity_matrix(cr);

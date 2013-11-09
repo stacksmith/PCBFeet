@@ -48,7 +48,6 @@ typedef struct sGrid {
 
 struct sDocument;
 typedef struct sView {
-  
   struct sDocument* document;
   // all coordinates here are in the doc coordinate system
   sPoint origin;
@@ -74,6 +73,7 @@ typedef struct sView {
   GtkWidget* objects;    //vbox with obj descriptions
   // array of parameter widgets
   GtkWidget* parm_widget[32]; //TODO: check the size!
+  sSelection selection;  //singleton; it's not a pointer.
 } sView;
 
 sView* view_new();
