@@ -199,9 +199,18 @@ printf("from %d to %d\n", old, view->grid.origin.x);
     status_xy_update(view);
   } else {
     // Regular click-release.  Locate object under mouse
+     
     sObject* hit = element_hit_test(view->document->element,view);
     if(hit) {
-      selection_add(&view->selection,hit);
+      if(event->state & GDK_CONTROL_MASK) { //control means add to selection
+printf("canvas_button_r... control, adding\n");
+        selection_add(&view->selection,hit);
+      } else {
+printf("canvas_button_r... no control, clearing selection\n");
+ 
+        selection_clear(&view->selection);
+        selection_add(&view->selection,hit);
+      }
       parm_realize(view,selection_uimask(&view->selection));
     }
 

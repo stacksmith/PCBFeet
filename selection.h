@@ -30,3 +30,4 @@ typedef struct sSelection {
 } sSelection;
 
 void selection_add(sSelection* sel,sObject* object);
+void selection_clear(sSelection* sel);

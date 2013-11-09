@@ -27,8 +27,9 @@ void selection_init(sSelection* sel){
   sel->data=NULL;
 }
 
-void selection_clear(sSelection* sel,sView* view){
+void selection_clear(sSelection* sel){
   g_slist_free(sel->data);
+  sel->data=NULL;
 }
 
 void selection_add(sSelection* sel,sObject* object){
@@ -41,18 +42,19 @@ void selection_add(sSelection* sel,sObject* object){
  intersecting elements only.  
 */
 unsigned int selection_uimask(sSelection* sel){
+printf("selection_uimask, sel=%p\n",sel);
   GSList* p = sel->data;
   unsigned int result = 0xFFFFFFFF;
   int i=0;
   while(p){
-printf("selection_uimask %x\n",result);
+printf("-----\nselection_uimask start:%x\n",result);
 printf("selection_uimask ((sObject*)(p->data))->UIMask is %x\n",((sObject*)(p->data))->UIMask);
     result &= ((sObject*)(p->data))->UIMask;  //and the masks for common
     p= g_slist_next(p);
     i++;
   }
   if(i>1) result &= UIMASK_MULTIPLE;//multiple selection turns off name/num
-printf("selection_uimask RESULT: %x\n",result);
+printf("selection_uimask RESULT for %d items: %x\n",i,result);
   return result;
 }
 
